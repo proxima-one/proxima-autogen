@@ -7,25 +7,23 @@ var queries = {}
 var entityStrings = {}
 var entities = {}
 
-function schemaProcessing() {
-  //
-  //
-  //
-  return "";
+function processSchema(schemaFile) {
+  let schema = fs.readFileSync(schemaFile)
+  let entities = parseSchema(schema)
+  entities = checkEntities(entities)
+  let entityText = generateEntitiesText(entities) //check entities
+  let queryText = generateQueryText(entities)
+  let schemaText = queryText + queryText + inputsText
+  fs.writeFileSync(schemaFile, schemaText)
 }
 
-async function readSchema(fileName) {
-  let schema = await fs.readFile(fileName)
+function readSchema(fileName) {
+  let schema = fs.readFile(fileName)
   return schema
 }
 
 function parseSchema(schema) {
   return parse(schema)
-}
-
-async function writeSchema(fileName, value) {
-  let fileLocation = "./db/config/"+config.name+".yaml";
-  await fs.writeFile(fileLocation, newSchemaText);
 }
 
 module.exports = {}

@@ -5,12 +5,12 @@
 var fs = require('fs');
 const { parse, visit, print } = require("graphql/language");
 
-function tablesFromSchema(appConfig, schemaFile) {
-  let schema = await fs.readFile(schemaFile)
+function generateApplicationDatabase(appConfig, schemaFile, db-config-ouputFile) {
+  let schema = fs.readFileSync(schemaFile)
   let tables = parseSchema(schema);
   let fileString = generate(appConfig, tables);
-  let fileLocation = "./db/config/"+appConfig.dbName+".yaml";
-  await fs.writeFile(fileLocation, fileString);
+
+  fs.writeFileSync(db-config-outputFile, fileString);
 }
 
 function generate(appConfig, tables) {
@@ -52,4 +52,4 @@ function table(dbName, tableName) {
 }
 
 
-module.exports = tableFromSchema(appConfig, schemaFile)
+module.exports = generateApplicationDatabase(appConfig, schemaFile)

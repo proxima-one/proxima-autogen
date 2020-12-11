@@ -3,17 +3,11 @@
 const { parse, visit, print } = require("graphql/language");
 
 
-
-//function processEntity()
-
-function processEntity(entity) {
-  var returnedEntity;
-  returnedEntity = ensureEntityIsCorrect(entity)
-  entities[returnedEntity.name] = returnedEntity
-  entityStrings[returnedEntity.name] = entityToGraphqlString(returnedEntity)
-  mutations[returnedEntity.name] = entityMutations(returnedEntity)
-  queries[returnedEntity.name] = entityQueries(returnedEntity)
-  return {entity, input, queries}
+function checkEntities(entities) {
+  for (entity in entities) {
+    checkEntity(entity)
+  }
+  return entities
 }
 
 function checkEntity(entity) {
@@ -39,17 +33,46 @@ function ensureEntityIsOptimized(entity) {
   return entity
 }
 
-function generateMutation(entity) {
-  let entityMutation = "put" + entity.name + "(input: " entity.name + "Input!)\n"
-  return entityMutation
+function generateEntitiesText(entities) {
+  let entityText = ""
+  for (entity in entities) {
+    entityText += generateEntityText(entity) + "\n"
+    entityText += generateEntityInputText(entity) + "\n"
+  }
+  return entityText
 }
 
-function entityInputs(entity) {
+function generateEntityText(entity) {
+  let entityText = "type " + entity.name {\n"
+  for (const [key, value] of Object.entries(entity.value)) {
+    entityText += key + ": " + value + "\n"
+  }
+  return entityText + "}\n"
+}
+
+function generateEntityInputText(entity) {
   let input = "input " + entity.name + "Input {\n"
   for (const [key, value] of Object.entries(entity.value)) {
     input += key + ": " + value + "\n"
   }
-  return input + "}\n\n"
+  return input + "}\n"
+}
+
+function generateQueryText(entities) {
+  let queryText = "type {\n"
+  for (entity in entities) {
+    queryText += generateGetQuery(entity)
+    queryText += generateGetAllQuery(entity)
+    queryText += generateSearchQuery(entity)
+    queryText += generateMutation(entity)
+  }
+  queryText += "\n}\n\n"
+  return queryText
+}
+
+function generateMutation(entity) {
+  let entityMutation = "put" + entity.name + "(input: " entity.name + "Input!)\n"
+  return entityMutation
 }
 
 function generateGetQuery(entity) {
