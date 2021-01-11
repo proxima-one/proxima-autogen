@@ -1,6 +1,6 @@
 {
   "name": "proxima-autogen",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "This repository is responsible for the auto-generation within the Proxima Network. It encapsulates processing of smart contracts for the DApp aggregators, creation of models, resolvers, and Data Vertices for the Proxima Node, and the building of the Proxima Vertex node itself.",
   "main": "./src/index.js",
   "directories": {
