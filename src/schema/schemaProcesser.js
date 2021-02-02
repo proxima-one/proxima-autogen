@@ -19,66 +19,113 @@ function createTestStructs(inputSchemaFile, outputJSONFile) {
   let entities = parseSchema(schema)
   entities = checkEntities(entities)
   let entityTestStructs = generateEntityTestStructs(entities)
-  let outputText = json.stringify(entityTestStructs)
-  fs.writeFileSync(outputJSONFile, outputText)
+  let outputText = JSON.stringify(entityTestStructs)
+  fs.outputFileSync(outputJSONFile, outputText)
 }
 
 function getEntityName(entity) {
-  //generate type, switch case for what to do
-  return "type"
+  // let entityType = getEntityType(entity)
+  // switch (entityType) {
+  //   case "entity":
+  //     return entity.name.value
+  //   case "entityInput":
+  //     return (entity.name.value).replace("Input", "")
+  //   default:
+  //     return entity.name.value
+  // }
+  return (entity.name.value).replace("Input", "")
 }
 
 function getEntityType(entity) {
-
-  return "type"
+  let objectType = entity.kind
+  let objectName = entity.name.value
+  if (objectName == "Query" || objectName == "Mutation") {
+    return objectName.toLowerCase()
+  }
+  if (objectType == "InputObjectTypeDefinition") {
+    return "entityInput"
+  }
+  return "entity"
 }
 
 function generateEntityTestStructs(entities) {
-  var entityTestStruct;
   var name;
-  var entityTestStructs = {}
-
-  for _, entity of entities {
+  var entityTestFunctions;
+  var completeTestStructs ={};
+  //console.log(entities)
+  for (const entity of entities) {
     let entityType = getEntityType(entity)
+    //console.log(entityType)
     if (entityType == "mutation" || entityType == "query") {
       continue
     }
     let name = getEntityName(entity)
-    if (!entityTestStructs[name]) {
-      entityTestStructs[name] = {name: name, operations: generateOperations(entity, entityType, entityTestStructs) }
+    let completeTestStruct = {name: name}
+    if (completeTestStructs[name]) {
+      completeTestStruct = completeTestStructs[name]
     }
-    let entityTestStruct = entityTestStructs[name]
-    entityTestStruct[entityType] = generateEntityTestStruct(entity)
-    entityTestStructs[name] = entity
+    completeTestStruct[entityType] = generateEntityTestStruct(entity)
+    completeTestStructs[name] = completeTestStruct
+    if (entityType == "entity") {
+      let entityTestFns = generateEntityTestFunctions(entity)
+      completeTestStructs[name].operations = entityTestFns
+    }
   }
-  return entityTestStructs
+  return completeTestStructs
+}
+
+function generateEntityTestFunctions(entity) {
+  let name = getEntityName(entity)
+  let entityTestFunctions = {}
+  let operations = ["get", "getAll", "search", "put"]
+
+  for (const operation of operations) {
+    entityTestFunctions[operation] = generateEntityTestFunction(name, entity, operation)
+  }
+  return entityTestFunctions
+}
+
+function generateEntityTestFunction(name, entity, operation) {
+  let variables = {}
+  let outputs = {}
+
+  let queryName = operation + name
+  let entityType = "query"
+    switch (operation) {
+      case "get":
+        variables = {id: "string", prove: "bool"}
+        //single, error
+        outputs = {}
+      case "getAll":
+        variables = {first: "int", last: "int", limit: "int", prove: "bool"}
+        //list, error
+        outputs = {}
+      case "search":
+        variables = {queryString: "string", prove: "bool"}
+        //list, error
+        outputs = {}
+      case "put":
+        entityType = "mutation"
+        variables = {input: name + "Input" }
+        //bool, error
+        outputs = {}
+    }
+
+  return {name: queryName, type: entityType, variables: variables, outputs: outputs}
 }
 
 function generateEntityTestStruct(entity) {
   var variableName;
-  var variableType;
-  var isRequired;
-
-  vars = {}
+  let vars = {}
 
 for (const field of entity.fields) {
-    //if it is a list, it goes empty
     variableName = field.name.value;
-    variableType = field.name.value;
-    required = 
-    //if it is ID, it goes to string
-    //otherwise use the type with a string
-    vars[variableName] = {name: variableName, type: variableType, required: isRequired}
-
+    console.log(field)
+    let isList, isRequired, variableType = processJSONFieldDefinition(field)
+    vars[variableName] = {name: variableName, type: variableType, isList: isList, required: isRequired}
   }
   return vars
 }
-
-function generateOperations(entities) {
-
-}
-
-//generate operations
 
 function generateEntitiesText(entities, entityDict = {}) {
   let entityText = ""
@@ -87,7 +134,7 @@ function generateEntitiesText(entities, entityDict = {}) {
       entityText += generateEntityText(entity, entityDict) + "\n"
       entityText += generateEntityInputText(entity, entityDict) + "\n"
       }
-      if (entity.kind == 'ObjectInputDefinition' && entity.kind != "Query" && entity.kind != "Mutation" && entity.name.value != "Query" && entity.name.value != "Mutation") {
+      if (entity.kind == 'InputObjectTypeDefinition' && entity.kind != "Query" && entity.kind != "Mutation" && entity.name.value != "Query" && entity.name.value != "Mutation") {
         entityText += generateEntityInputText(entity, entities) + "\n"
       }
   }
@@ -186,8 +233,26 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
   return fieldText +  name + endText
 }
 
+function processJSONFieldDefinition(field) {
+  var variableType;
+  let isRequired = false;
+  let isList = false;
+
+  field = field.type
+  while (field.kind && field.kind != "NamedType") {
+    if (field.kind == "NonNullableType") {
+      isRequired = true
+    }
+    if (field.kind == "ListType") {
+      isList = true
+    }
+    field = field.type
+  }
+  variableType = (field.name.value).toLowerCase()
+  return isList, isRequired, variableType
+}
+
 function generateEntityInputText(entity, entityDict = {}) {
-  //console.log(entity)
   let inputText = "input " + entity.name.value + "Input {\n"
   for (const field of entity.fields) {
     inputText += processFieldDefinition(field, entityDict, "Input") + "\n"
@@ -229,4 +294,4 @@ function generateSearchQuery(entity) {
   return entitySearchQueryString
 }
 
-module.exports = {processSchema}
+module.exports = {processSchema, createTestStructs}
