@@ -99,7 +99,9 @@ describe('schema processing', function() {
 function checkTestStructEntity(entity, entityInput) {
   //entityShould contain proof
   for (const [varName, varField] of Object.entries(entityInput)) {
-    assert(entity[varName] && (entity[varName] == varField))
+    assert(entity[varName])
+    assert(entity[varName].type == varField.type)
+    //assert((entity[varName] == varField))
   }
   return true
 }
@@ -111,6 +113,10 @@ function checkType(typeName) {
 function checkTestStructOperations(operations) {
   //check that input and entity are the same
   //check operations
+  assert(operations["get"])
+  assert(operations["getAll"])
+  assert(operations["put"])
+  assert(operations["search"])
     //get
     //getAll
     //query

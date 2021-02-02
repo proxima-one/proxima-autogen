@@ -120,7 +120,6 @@ function generateEntityTestStruct(entity) {
 
 for (const field of entity.fields) {
     variableName = field.name.value;
-    console.log(field)
     let isList, isRequired, variableType = processJSONFieldDefinition(field)
     vars[variableName] = {name: variableName, type: variableType, isList: isList, required: isRequired}
   }
