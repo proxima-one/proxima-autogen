@@ -14,6 +14,86 @@ function processSchema(schemaFile) {
   fs.writeFileSync(schemaFile, schemaText)
 }
 
+function createTestStructs(inputSchemaFile, outputJSONFile) {
+  let schema = (fs.readFileSync(inputSchemaFile)).toString()
+  let entities = parseSchema(schema)
+  entities = checkEntities(entities)
+  let entityTestStructs = generateEntityTestStructs(entities)
+  let outputText = json.stringify(entityTestStructs)
+  fs.writeFileSync(outputJSONFile, outputText)
+}
+
+function getEntityName(entity) {
+  //generate type, switch case for what to do
+  return "type"
+}
+
+function getEntityType(entity) {
+
+  return "type"
+}
+
+function generateEntityTestStructs(entities) {
+  var entityTestStruct;
+  var name;
+  var entityTestStructs = {}
+
+  for _, entity of entities {
+    let entityType = getEntityType(entity)
+    if (entityType == "mutation" || entityType == "query") {
+      continue
+    }
+    let name = getEntityName(entity)
+    if (!entityTestStructs[name]) {
+      entityTestStructs[name] = {name: name, operations: generateOperations(entity, entityType, entityTestStructs) }
+    }
+    let entityTestStruct = entityTestStructs[name]
+    entityTestStruct[entityType] = generateEntityTestStruct(entity)
+    entityTestStructs[name] = entity
+  }
+  return entityTestStructs
+}
+
+function generateEntityTestStruct(entity) {
+  var variableName;
+  var variableType;
+  var isRequired;
+
+  vars = {}
+
+for (const field of entity.fields) {
+    //if it is a list, it goes empty
+    variableName = field.name.value;
+    variableType = field.name.value;
+    required = 
+    //if it is ID, it goes to string
+    //otherwise use the type with a string
+    vars[variableName] = {name: variableName, type: variableType, required: isRequired}
+
+  }
+  return vars
+}
+
+function generateOperations(entities) {
+
+}
+
+//generate operations
+
+function generateEntitiesText(entities, entityDict = {}) {
+  let entityText = ""
+  for (const entity of entities) {
+      if (entity.kind == 'ObjectTypeDefinition' && entity.kind != "Query" && entity.kind != "Mutation" && entity.name.value != "Query" && entity.name.value != "Mutation") {
+      entityText += generateEntityText(entity, entityDict) + "\n"
+      entityText += generateEntityInputText(entity, entityDict) + "\n"
+      }
+      if (entity.kind == 'ObjectInputDefinition' && entity.kind != "Query" && entity.kind != "Mutation" && entity.name.value != "Query" && entity.name.value != "Mutation") {
+        entityText += generateEntityInputText(entity, entities) + "\n"
+      }
+  }
+  return entityText
+}
+
 function makeDict(entities) {
   let entityDict = {}
   for (const entity of entities) {
