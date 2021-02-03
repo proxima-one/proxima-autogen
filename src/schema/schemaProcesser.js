@@ -247,7 +247,7 @@ function processJSONFieldDefinition(field) {
     }
     field = field.type
   }
-  variableType = (field.name.value).toLowerCase()
+  variableType = field.name.value
   return isList, isRequired, variableType
 }
 
