@@ -89,7 +89,7 @@ describe('schema processing', function() {
         checkTestStructEntity(entityTestStruct.entity, entityTestStruct.entityInput)
         checkTestStructOperations(entityTestStruct.operations)
       }
-      //cleanup(destDir)
+      cleanup(destDir)
       assert.equal(true, true);
     });
   }
