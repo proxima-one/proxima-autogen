@@ -13,6 +13,19 @@ function processSchema(config, file = "") {
   //return the config file
 }
 
+function createTestStructs(config, outputFileName = "", outputDir = "./test/") {
+  let schemaFile = file
+  if (schemaFile == "") {
+    schemaFile = config.schema.file
+  }
+
+  let outputJSONFileName = outputDir + config.name + "_test.json"
+  if outputDir != "" {
+    fs.ensureDirSync(outputDir)
+  }
+  processer.createTestStructs(schemaFile, outputJSON)
+}
+
 
 function getSchemaDir(config) {
   //search the schema directory
