@@ -20,7 +20,7 @@ function createTestStructs(config, outputFileName = "", outputDir = "./test/") {
   }
 
   let outputJSONFileName = outputDir + config.name + "_test.json"
-  if outputDir != "" {
+  if (outputDir != "") {
     fs.ensureDirSync(outputDir)
   }
   processer.createTestStructs(schemaFile, outputJSON)
