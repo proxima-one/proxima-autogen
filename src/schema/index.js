@@ -13,17 +13,16 @@ function processSchema(config, file = "") {
   //return the config file
 }
 
-function createTestStructs(config, outputFileName = "", outputDir = "./test/") {
-  let schemaFile = file
+function createTestStructs(config, sFile = "", outFile = "") {
+  let outputFile = outFile
+  let schemaFile = sFile
   if (schemaFile == "") {
     schemaFile = config.schema.file
   }
-
-  let outputJSONFileName = outputDir + config.name + "_test.json"
-  if (outputDir != "") {
-    fs.ensureDirSync(outputDir)
+  if (outputFile == "") {
+    outputFile = "./test-structs/" + config.name + "_test.json"
   }
-  processer.createTestStructs(schemaFile, outputJSON)
+  processer.createTestStructs(schemaFile, outputFile)
 }
 
 
@@ -32,4 +31,4 @@ function getSchemaDir(config) {
   //replace the config
 }
 
-module.exports = {processSchema: processSchema, createTestStructs: processer.createTestStructs};
+module.exports = {processSchema: processSchema, createTestStructs: createTestStructs};
