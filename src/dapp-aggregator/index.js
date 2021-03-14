@@ -45,7 +45,7 @@ function buildDataAggregator(app_config = {}) {
   fs.ensureDirSync('./DataAggregator')
   fs.copySync('./app-config.yml', './DataAggregator/app-config.yml')
   fs.copySync('./handlers/', './DataAggregator/handlers/')
-  fs.copySync('./vertex-client/', './DataAggregator/vertex-client/')
+  fs.copySync('./proxima-sdk-plugin/', './DataAggregator/proxima-sdk-plugin/')
   fs.copySync('./blockchain-clients/', './DataAggregator/blockchain-clients/')
   fs.copySync('./abi', './DataAggregator/abi')
   fs.writeFileSync('./DataAggregator/index.js', aggregatorTemplate)

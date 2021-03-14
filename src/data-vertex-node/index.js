@@ -31,7 +31,10 @@ function populateDataVertex(config) {
   proximaConfig.data_vertex_node = location + "/DataVertex"
   fs.copySync(location + '/schema/', location + '/DataVertex/schema/')
   fs.copySync(location + '/database/', location + '/DataVertex/database/')
-  fs.copySync(gqlgenTemplatePath, location + '/DataVertex/.gqlgen.yml')
+
+  fs.copySync(location + '/utils/testdata/', location + '/DataVertex/testdata/')
+
+  //fs.copySync(gqlgenTemplatePath, location + '/DataVertex/.gqlgen.yml')
   fs.copySync(location + "/app-config.yml", location + "/DataVertex/app-config.yml")
   fs.outputFileSync(location + "/DataVertex/.proxima.yml", yaml.safeDump(proximaConfig))
 }

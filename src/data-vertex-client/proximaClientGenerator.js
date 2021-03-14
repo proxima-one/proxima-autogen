@@ -5,12 +5,12 @@ const fs = require("fs-extra");
 const clientFileTemplate = (fs.readFileSync(require.resolve("./proximaVertexClientTemplate.js"))).toString()
 
 function generateVertexClient(config) {
-  let clientFileName = "./vertex-client/index.js"
+  let clientFileName = "./proxima-sdk-plugin/index.js"
   let configText = generateConfigText(config)
   let clientFileText = clientFileTemplate.replace("//CONFIG CODE TO BE ADDED", configText);
   fs.outputFileSync(clientFileName, clientFileText)
 
-  let queryFileName = "./vertex-client/app_queries.json"
+  let queryFileName = "./proxima-sdk-plugin/app_queries.json"
   let schema = (fs.readFileSync(config.schemaFile)).toString()
   let entities = generateEntities(schema)
   let queryText = generateVertexClientQueryText(entities)
@@ -56,6 +56,28 @@ function processFieldDefinition(field) {
   }
   return fieldText + endText
 }
+
+
+function generateTestMutation(entityName, entityText) {
+  let entityMutation = "mutation {put" + entityName + "(input: $input)}\n";
+  return entityMutation
+}
+
+function generateTestGetQuery(entityName, entityText) {
+  let entityGetQueryString = "query { "  + entityName  + "(id: $id, prove: $prove) {" + entityText + "}}\n";
+  return entityGetQueryString
+}
+
+function generateTestGetAllQuery(entityName, entityText) {
+  let entityGetAllQueryString = "query { "  + entityName + "s(first: $first , last: $last, limit: $limit, prove: $prove) {" + entityText + "}}";
+  return entityGetAllQueryString
+}
+
+function generateTestSearchQuery(entityName, entityText) {
+  let entitySearchQueryString = "query {"  + entityName + "Search(queryText: $queryText, prove: $prove) {"  + entityText + "  }}";
+  return entitySearchQueryString
+}
+
 
 function generateVertexClientQueryText(entities) {
   let app = {}

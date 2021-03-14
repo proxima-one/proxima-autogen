@@ -34,16 +34,16 @@ function parseSchema(schema) {
 }
 
 function application(dbName, config) {
-  let appString =  "application:\n" +
-    "\tname: " + dbName +"\n" +
-    "\tid: " + config.id + "  \n" +
-    "\towner: " + config.owner + "\n" +
-    "\tversion: " + config.version + "\n" +
-    "\tconfig:\n" +
-      "\t\tcache: " + config.config.cache + "\n" +
-      "\t\tcompression: " + config.config.compression + "\n" +
-      "\t\tbatching: " + config.config.batching + "\n" +
-    "\ttables:\n";
+  let appString = "name: " + dbName +"\n" +
+    "id: " + config.id + "  \n" +
+    "owner: " + config.owner + "\n" +
+    "version: " + config.version + "\n" +
+    "config:\n" +
+      " cache: " + config.cache + "\n" +
+      " compression: " + config.compression + "\n" +
+      " batching: " + config.batching + "\n" +
+      " sleep: " + config.sleep + "\n" +
+    "tables:\n";
     return appString;
 }
 
@@ -58,7 +58,7 @@ function defaultConfig(config) {
   let cache = "5m"
   let sleep = "10m"
   let compression = "36h"
-  let batching = "500ms"
+  let batching = "5s"
   let header = ""
   let blockNum = "0"
   let version = "0.0.0"
@@ -70,19 +70,20 @@ function table(dbName, tableName, cacheExpiration = "5m") {
   let cache = "5m"
   let sleep = "10m"
   let compression = "36h"
-  let batching = "500ms"
+  let batching = "5s"
   let header = "Root"
   let blockNum = "0"
   let version = "0.0.0"
-  return "\t\t- name: " + tableName + "\n" +
-  "\t\t  id: " + dbName +"-"+ tableName + " \n" +
-  "\t\t  version: " +  version + " \n" +
-  "\t\t  blockNum: " +  blockNum + " \n" +
-  "\t\t  header: " +  header + " \n" +
-  "\t\t  compression: " +  compression + " \n" +
-  "\t\t  batching: " +  batching + " \n" +
-  "\t\t  sleep: " +  sleep + " \n" +
-  "\t\t  cacheExpiration: " +  cacheExpiration + " \n"
+  return
+  "  - name: " + tableName + "\n" +
+  "    id: " + dbName +"-"+ tableName + " \n" +
+  "    version: " +  version + " \n" +
+  "    blockNum: " +  blockNum + " \n" +
+  "    header: " +  header + " \n" +
+  "    compression: " +  compression + " \n" +
+  "    batching: " +  batching + " \n" +
+  "    sleep: " +  sleep + " \n" +
+  "    cacheExpiration: " +  cacheExpiration + " \n"
 }
 
 module.exports = {generateApplicationDatabase}

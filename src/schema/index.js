@@ -20,9 +20,22 @@ function createTestStructs(config, sFile = "", outFile = "") {
     schemaFile = config.schema.file
   }
   if (outputFile == "") {
-    outputFile = "./test-structs/" + config.name + "_test.json"
+    outputFile = "./utils/testdata/vertex_entities.json"
   }
   processer.createTestStructs(schemaFile, outputFile)
+}
+
+
+function createTestQueries(config, sFile = "", outFile = "") {
+  let outputFile = outFile
+  let schemaFile = sFile
+  if (schemaFile == "") {
+    schemaFile = config.schema.file
+  }
+  if (outputFile == "") {
+    outputFile = "./utils/testdata/vertex_queries.json"
+  }
+  processer.createTestQueries(schemaFile, outputFile)
 }
 
 

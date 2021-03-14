@@ -48,6 +48,8 @@ function getEntityType(entity) {
   return "entity"
 }
 
+//generateQueryTestStructs
+
 function generateEntityTestStructs(entities) {
   var name;
   var entityTestFunctions;
@@ -96,19 +98,23 @@ function generateEntityTestFunction(name, entity, operation) {
         variables = {id: "string", prove: "bool"}
         //single, error
         outputs = {}
+        break;
       case "getAll":
         variables = {first: "int", last: "int", limit: "int", prove: "bool"}
         //list, error
         outputs = {}
+        break;
       case "search":
-        variables = {queryString: "string", prove: "bool"}
+        variables = {queryString: "string"}
         //list, error
         outputs = {}
+        break;
       case "put":
         entityType = "mutation"
         variables = {input: name + "Input" }
         //bool, error
         outputs = {}
+        break;
     }
 
   return {name: queryName, type: entityType, variables: variables, outputs: outputs}
@@ -177,6 +183,7 @@ function ensureEntityIsCorrect(entity) {
   if (!entity.id) {
     entity.id = "ID!"
   }
+  //update
   if (entity.proof != "String") {
     entity.proof = "String"
   }
@@ -292,5 +299,9 @@ function generateSearchQuery(entity) {
   let entitySearchQueryString = entity.name.value + "Search(queryText: String!, prove: Boolean): ["  + entity.name.value  + "!]!\n"
   return entitySearchQueryString
 }
+
+
+
+
 
 module.exports = {processSchema, createTestStructs}

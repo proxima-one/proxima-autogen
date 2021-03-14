@@ -76,36 +76,38 @@ function generateResolverBodyText(functionString) {
 	// Resolver)
 	// (ctx context.Context,
 	body += "table, _ := r.db.GetTable(\"" + tableName + "\")\n";
-	let returnV = "return value, nil\n"
+	let returnV = "return &value, nil\n"
 	switch (type) {
 
 		case 'get':
 			body += "result, err := table.Get(id, args[\"prove\"].(bool))\n";
-			returnV = "return &value, nil\n"
 			break
 		case 'mutation':
 			body += "_, err := table.Put(*input.ID, input, args[\"prove\"].(bool), args)\n";
 			body += "boolResult := true\n"
 			body += 	"if err != nil {\n" +
-				"  return &boolResult, err\n" +
-				"}\n"
+			" boolResult = false\n" +
+				"}\n" +
+			"  return &boolResult, err\n"
+			return body
 			break
 		case 'getAll':
-			body += "result, err := table.Get(args[\"id\"].(string),  args[\"prove\"].(bool))\n";
+			body += "result, err := table.Scan(*first, *last, *limit, args[\"prove\"].(bool),  args)\n";
+			//
+			returnV = "return value, nil\n"
 			break
 		case 'query':
-			body += "result, err := table.Get(args[\"id\"].(string),  args[\"prove\"].(bool))\n";
+			body += "result, err := table.Query(queryText, args[\"prove\"].(bool))\n";
+			//
+			returnV = "return value, nil\n"
 			break
-	}
-	if (!isQuery) {
-		body += "return &boolResult, nil\n"
-		return body
 	}
 	if (isQuery) {
 		body += 	"if err != nil {\n" +
 			"  return nil, err\n" +
 			"}\n"
 	}
+
 	let output = getOutput(type, tableName, functionString)
 	body += "data := result.GetValue();\n"
 	body += "var value " + output + ";\n" +

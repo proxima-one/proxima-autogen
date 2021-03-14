@@ -6,7 +6,7 @@ const gql = require('graphql-tag');
 //const yaml = require('js-yaml');
 //defaultConfig = yaml.safeLoad(fs.readFileSync(configFile))
 //let configFile = "./vertex-config.yml"
-const VertexClient = require('proxima-vertex-client')
+const VertexClient = require('proxima-sdk-js')
 
 let defaultConfig = {}
 
