@@ -1,0 +1,107 @@
+query user($id: ID!) {
+  User(id: $id) {
+    totalMPHEarned
+    totalMPHPaidBack
+    pools {
+      id
+      address
+      mphDepositorRewardMultiplier
+      # deposits(where: { user: $id, active: true }, orderBy: nftID) {
+      #   nftID
+      #   fundingID
+      #   amount
+      #   maturationTimestamp
+      #   depositTimestamp
+      #   interestEarned
+      #   mintMPHAmount
+      #   takeBackMPHAmount
+      # }
+    }
+    totalDepositByPool {
+      pool {
+        address
+        stablecoin
+      }
+      totalActiveDeposit
+      totalInterestEarned
+    }
+  }
+}
+
+query dpools {
+  DPools {
+    id
+    address
+    totalActiveDeposit
+    oneYearInterestRate
+    #mphDepositorRewardMintMultiplier
+    mphDepositorRewardMultiplier
+  }
+}
+
+query funder($id: ID!) {
+  Funder(id: $id) {
+    totalMPHEarned
+    pools {
+      id
+      address
+      # # fundings(where: { funder: $id, active: true }, orderBy: nftID) {
+      # #   id
+      # #   pool {
+      # #     address
+      # #     oracleInterestRate
+      # #     moneyMarketIncomeIndex
+      # #   }
+      #   fromDepositID
+      #   toDepositID
+      #   nftID
+      #   recordedFundedDepositAmount
+      #   recordedMoneyMarketIncomeIndex
+      #   initialFundedDepositAmount
+      #   fundedDeficitAmount
+      #   totalInterestEarned
+      #   mphRewardEarned
+      #   refundAmount
+      # }
+    }
+    totalInterestByPool {
+      pool {
+        id
+        stablecoin
+      }
+      totalDeficitFunded
+      totalRecordedFundedDepositAmount
+      totalInterestEarned
+    }
+  }
+}
+
+query dpoolsLatest {
+  DPools {
+    id
+    address
+    surplus
+    unfundedDepositAmount
+    oneYearInterestRate
+    oracleInterestRate
+    mphFunderRewardMultiplier
+    # latestDeposit: deposits(orderBy: nftID, orderDirection: desc, first: 1) {
+    #   nftID
+    # }
+  }
+}
+
+query dpool($id: ID!) {
+  DPool(id: $id) {
+    id
+    moneyMarketIncomeIndex
+    # deposits(where: { nftID_gt: ${this.selectedPool.latestFundedDeposit} }, orderBy: nftID) {
+    #   nftID
+    #   amount
+    #   active
+    #   maturationTimestamp
+    #   interestEarned
+    #   initialMoneyMarketIncomeIndex
+    # }
+  }
+}

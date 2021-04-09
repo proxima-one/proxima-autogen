@@ -32,7 +32,7 @@ function init_datasource(datasource_config, clients, vertexClient) {
 
 function main() {
   let config = yaml.safeLoad(fs.readFileSync('./app-config.yml'));
-  const generatedVertexClient = require('./proxima-sdk-plugin/index.js');
+  const generatedVertexClient = require('./proxima-sdk-vertex-client/index.js');
   const generatedBlockchainClients = require('./blockchain-clients/index.js');
   let name = config.name;
   let vertexClient = generatedVertexClient.init(); //vertex

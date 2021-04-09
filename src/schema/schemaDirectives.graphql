@@ -1,0 +1,10 @@
+type Proof {
+  root: String
+  proof: String
+}
+
+directive @hasAuthentication on MUTATION | SUBSCRIPTION | QUERY
+directive @goField(
+  forceResolver: Boolean
+  name: String
+) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION

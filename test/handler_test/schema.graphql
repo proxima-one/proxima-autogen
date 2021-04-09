@@ -1,0 +1,134 @@
+type DPoolList {
+  id: ID!
+  pools: [DPool!]!
+  numPools: String!
+  numUsers: String!
+  numActiveUsers: String!
+  numFunders: String!
+}
+
+type DPool {
+  id: ID!
+  address: String!
+  moneyMarket: String!
+  stablecoin: String!
+  interestModel: String!
+  users: [User]!
+  numUsers: String!
+  deposits: [Deposit]! @derivedFrom(field: "pool")
+  numDeposits: String!
+  numActiveDeposits: String!
+  totalActiveDeposit: String!
+  totalHistoricalDeposit: String!
+  totalInterestPaid: String!
+  unfundedDepositAmount: String!
+  funders: [Funder]!
+  numFunders: String!
+  fundings: [Funding]!
+  numFundings: String!
+  MinDepositPeriod: String!
+  MaxDepositPeriod: String!
+  MinDepositAmount: String!
+  MaxDepositAmount: String!
+  mphMintingMultiplier: String!
+  mphDepositorRewardMultiplier: String!
+  mphFunderRewardMultiplier: String!
+  oneYearInterestRate: String!
+  surplus: String!
+  moneyMarketIncomeIndex: String!
+  oracleInterestRate: String!
+}
+
+type User {
+  id: ID!
+  address: String!
+  pools: [DPool]!
+  numPools: String!
+  deposits: [Deposit]!
+  numDeposits: String!
+  numActiveDeposits: String!
+  totalDepositByPool: [UserTotalDeposit]!
+  totalMPHEarned: String!
+  totalMPHPaidBack: String!
+}
+
+type UserTotalDeposit {
+  id: ID!
+  user: User!
+  pool: DPool!
+  totalActiveDeposit: String!
+  totalHistoricalDeposit: String!
+  totalInterestEarned: String!
+  totalHistoricalInterestEarned: String!
+}
+
+type Deposit {
+  id: ID!
+  nftID: String!
+  user: User!
+  pool: DPool!
+  amount: String!
+  maturationTimestamp: String!
+  active: Boolean!
+  depositTimestamp: String!
+  interestEarned: String!
+  fundingID: String!
+  mintMPHAmount: String!
+  takeBackMPHAmount: String!
+  initialMoneyMarketIncomeIndex: String!
+}
+
+type Funder {
+  id: ID!
+  address: String!
+  pools: [DPool]!
+  numPools: String!
+  fundings: [Funding]!
+  numFundings: String!
+  totalMPHEarned: String!
+  totalInterestByPool: [FunderTotalInterest]!
+}
+
+type FunderTotalInterest {
+  id: ID!
+  funder: Funder!
+  pool: DPool!
+  totalDeficitFunded: String!
+  totalHistoricalDeficitFunded: String!
+  totalInterestEarned: String!
+  totalHistoricalInterestEarned: String!
+  totalRecordedFundedDepositAmount: String!
+}
+
+type Funding {
+  id: ID!
+  nftID: String!
+  funder: Funder!
+  pool: DPool
+  fromDepositID: String!
+  toDepositID: String!
+  active: Boolean!
+  recordedFundedDepositAmount: String!
+  recordedMoneyMarketIncomeIndex: String!
+  initialFundedDepositAmount: String!
+  fundedDeficitAmount: String!
+  totalInterestEarned: String!
+  mintMPHAmount: String!
+}
+
+type MPHHolder {
+  id: ID!
+  address: String!
+  mphBalance: String!
+  stakedMPHBalance: String!
+  totalHistoricalReward: String!
+}
+
+type MPH {
+  id: ID!
+  totalSupply: String!
+  totalStakedMPHBalance: String!
+  totalHistoricalReward: String!
+  rewardPerSecond: String!
+  rewardPerMPHPerSecond: String!
+}

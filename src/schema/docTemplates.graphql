@@ -1,0 +1,9 @@
+query $name($$varName: ID!, $prove: Boolean) {
+  $name($varName: $$varName, prove: $prove) {
+    $body
+  }
+}
+####
+mutation Update$name($$varName: $nameInput!) {
+  update$name($varName: $$varName)
+}

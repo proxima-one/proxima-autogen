@@ -1,0 +1,16 @@
+query ConversionRate($id: ID!, $prove: Boolean) {
+  ConversionRate(id: $id, prove: $prove) {
+      token
+  rateSell
+  rateBuy
+  spread
+  spreadPercent
+
+  }
+}
+
+
+
+mutation UpdateConversionRate($input: ConversionRateInput!) {
+  updateConversionRate(input: $input)
+}

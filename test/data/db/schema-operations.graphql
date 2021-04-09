@@ -1,0 +1,198 @@
+
+
+query DPoolList($id: String!, $prove: Boolean) {
+  DPoolList(id: $id, prove: $prove) {
+      id
+  numPools
+  numUsers
+  numActiveUsers
+  numFunders
+
+  }
+}
+
+
+
+mutation UpdateDPoolList($input: DPoolListInput) {
+  DPoolList(input, $input)
+}
+query DPool($id: String!, $prove: Boolean) {
+  DPool(id: $id, prove: $prove) {
+      id
+  address
+  moneyMarket
+  stablecoin
+  interestModel
+  numUsers
+  numDeposits
+  numActiveDeposits
+  totalActiveDeposit
+  totalHistoricalDeposit
+  totalInterestPaid
+  unfundedDepositAmount
+  numFunders
+  numFundings
+  MinDepositPeriod
+  MaxDepositPeriod
+  MinDepositAmount
+  MaxDepositAmount
+  mphMintingMultiplier
+  mphDepositorRewardMultiplier
+  mphFunderRewardMultiplier
+  oneYearInterestRate
+  surplus
+  moneyMarketIncomeIndex
+  oracleInterestRate
+
+  }
+}
+
+
+
+mutation UpdateDPool($input: DPoolInput) {
+  DPool(input, $input)
+}
+query User($id: String!, $prove: Boolean) {
+  User(id: $id, prove: $prove) {
+      id
+  address
+  numPools
+  numDeposits
+  numActiveDeposits
+  totalMPHEarned
+  totalMPHPaidBack
+
+  }
+}
+
+
+
+mutation UpdateUser($input: UserInput) {
+  User(input, $input)
+}
+query UserTotalDeposit($id: String!, $prove: Boolean) {
+  UserTotalDeposit(id: $id, prove: $prove) {
+      id
+  totalActiveDeposit
+  totalHistoricalDeposit
+  totalInterestEarned
+  totalHistoricalInterestEarned
+
+  }
+}
+
+
+
+mutation UpdateUserTotalDeposit($input: UserTotalDepositInput) {
+  UserTotalDeposit(input, $input)
+}
+query Deposit($id: String!, $prove: Boolean) {
+  Deposit(id: $id, prove: $prove) {
+      id
+  nftID
+  amount
+  maturationTimestamp
+  active
+  depositTimestamp
+  interestEarned
+  fundingID
+  mintMPHAmount
+  takeBackMPHAmount
+  initialMoneyMarketIncomeIndex
+
+  }
+}
+
+
+
+mutation UpdateDeposit($input: DepositInput) {
+  Deposit(input, $input)
+}
+query Funder($id: String!, $prove: Boolean) {
+  Funder(id: $id, prove: $prove) {
+      id
+  address
+  numPools
+  numFundings
+  totalMPHEarned
+
+  }
+}
+
+
+
+mutation UpdateFunder($input: FunderInput) {
+  Funder(input, $input)
+}
+query FunderTotalInterest($id: String!, $prove: Boolean) {
+  FunderTotalInterest(id: $id, prove: $prove) {
+      id
+  totalDeficitFunded
+  totalHistoricalDeficitFunded
+  totalInterestEarned
+  totalHistoricalInterestEarned
+  totalRecordedFundedDepositAmount
+
+  }
+}
+
+
+
+mutation UpdateFunderTotalInterest($input: FunderTotalInterestInput) {
+  FunderTotalInterest(input, $input)
+}
+query Funding($id: String!, $prove: Boolean) {
+  Funding(id: $id, prove: $prove) {
+      id
+  nftID
+  fromDepositID
+  toDepositID
+  active
+  recordedFundedDepositAmount
+  recordedMoneyMarketIncomeIndex
+  initialFundedDepositAmount
+  fundedDeficitAmount
+  totalInterestEarned
+  mintMPHAmount
+
+  }
+}
+
+
+
+mutation UpdateFunding($input: FundingInput) {
+  Funding(input, $input)
+}
+query MPHHolder($id: String!, $prove: Boolean) {
+  MPHHolder(id: $id, prove: $prove) {
+      id
+  address
+  mphBalance
+  stakedMPHBalance
+  totalHistoricalReward
+
+  }
+}
+
+
+
+mutation UpdateMPHHolder($input: MPHHolderInput) {
+  MPHHolder(input, $input)
+}
+query MPH($id: String!, $prove: Boolean) {
+  MPH(id: $id, prove: $prove) {
+      id
+  totalSupply
+  totalStakedMPHBalance
+  totalHistoricalReward
+  rewardPerSecond
+  rewardPerMPHPerSecond
+
+  }
+}
+
+
+
+mutation UpdateMPH($input: MPHInput) {
+  MPH(input, $input)
+}

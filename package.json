@@ -1,6 +1,6 @@
 {
   "name": "proxima-autogen",
-  "version": "0.0.23",
+  "version": "0.0.27",
   "description": "This repository is responsible for the auto-generation within the Proxima Network. It encapsulates processing of smart contracts for the DApp aggregators, creation of models, resolvers, and Data Vertices for the Proxima Node, and the building of the Proxima Vertex node itself.",
   "main": "./src/index.js",
   "directories": {
@@ -20,13 +20,36 @@
   },
   "homepage": "https://github.com/proxima-one/proxima-autogen#readme",
   "dependencies": {
+    "@types/react": "^17.0.3",
     "fs": "0.0.1-security",
-    "fs-extra": "^9.0.1",
-    "graphql": "^15.4.0",
+    "fs-extra": "^9.1.0",
     "graphql-tag": "^2.11.0",
+    "hardhat": "^2.1.2",
     "js-yaml": "^3.14.1",
+    "lodash": "^4.17.21",
     "mocha": "^8.2.1",
     "process": "^0.11.10",
-    "proxima-vertex-client": "^1.0.1"
+    "proxima-vertex-client": "^1.0.1",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.21.3",
+    "@graphql-codegen/typed-document-node": "^1.18.4",
+    "@graphql-codegen/typescript": "^1.21.1",
+    "@graphql-codegen/typescript-graphql-request": "^3.1.0",
+    "@graphql-codegen/typescript-operations": "^1.17.15",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.3",
+    "@typechain/ethers-v4": "^4.0.0",
+    "@typechain/ethers-v5": "^4.0.0",
+    "@types/react": "^17.0.3",
+    "ethers": "^5.1.0",
+    "graphql": "^15.5.0",
+    "graphql-codegen": "^0.4.0",
+    "hardhat": "^2.1.2",
+    "react": "^17.0.2",
+    "truffle": "^5.3.0",
+    "typechain": "^4.0.3",
+    "typescript": "^4.2.4",
+    "web3": "^1.3.4"
   }
 }
