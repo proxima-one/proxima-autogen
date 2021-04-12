@@ -179,6 +179,13 @@ function updateTypescriptGenConfiguration(
     //scalars: scalars,
   };
 
+  // plugins:
+  // {"typescript-mock-data":
+  //     scalars:
+  //       Date: # gets translated to casual.date('YYYY-MM-DD')
+  //         generator: date
+  //         arguments: 'YYYY-MM-DD'}
+
   let generateConfig = {};
   generateConfig[outFile] = {
     plugins: typeScriptPlugins,
@@ -190,7 +197,7 @@ function updateTypescriptGenConfiguration(
     config: typeScriptTestConfig,
   };
   let schemaFolder =
-    schemaFile.substring(0, schemaFile.lastIndexOf("/")) + "/*.graphql";
+    schemaFile.substring(0, schemaFile.lastIndexOf("/")) + "/*.graphqls";
   let config = {
     schema: schemaFile,
     documents: schemaFolder,

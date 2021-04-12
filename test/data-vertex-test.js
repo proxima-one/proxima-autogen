@@ -22,7 +22,7 @@ async function dataVertexSetup() {
 
 function cleanup() {
   process.chdir("../../.");
-  fs.removeSync(destDir);
+  //fs.removeSync(destDir);
 }
 
 describe("data vertex gen", async function () {

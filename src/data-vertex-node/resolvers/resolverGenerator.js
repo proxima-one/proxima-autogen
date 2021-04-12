@@ -122,7 +122,10 @@ function isEntityResolver(functionText) {
 
 //dataloader fns, determine if is list
 function createEntityResolverFunction(functionText, dataloaders = {}) {
+  console.log(functionText);
   let loaderName = getDataloaderName(functionText);
+  console.log(loaderName);
+  console.log(dataloaders);
   let dataloader = dataloaders[loaderName];
   let entityName = dataloader.entityName;
   let inputs = dataloader.objInput;

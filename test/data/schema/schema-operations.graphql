@@ -1,6 +1,4 @@
-
-
-query DPoolList($id: String!, $prove: Boolean) {
+query DPoolList($id: ID!, $prove: Boolean) {
   DPoolList(id: $id, prove: $prove) {
       id
   numPools
@@ -13,10 +11,10 @@ query DPoolList($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateDPoolList($input: DPoolListInput) {
-  DPoolList(input, $input)
+mutation UpdateDPoolList($input: DPoolListInput!) {
+  updateDPoolList(input: $input)
 }
-query DPool($id: String!, $prove: Boolean) {
+query DPool($id: ID!, $prove: Boolean) {
   DPool(id: $id, prove: $prove) {
       id
   address
@@ -49,10 +47,10 @@ query DPool($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateDPool($input: DPoolInput) {
-  DPool(input, $input)
+mutation UpdateDPool($input: DPoolInput!) {
+  updateDPool(input: $input)
 }
-query User($id: String!, $prove: Boolean) {
+query User($id: ID!, $prove: Boolean) {
   User(id: $id, prove: $prove) {
       id
   address
@@ -67,10 +65,10 @@ query User($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateUser($input: UserInput) {
-  User(input, $input)
+mutation UpdateUser($input: UserInput!) {
+  updateUser(input: $input)
 }
-query UserTotalDeposit($id: String!, $prove: Boolean) {
+query UserTotalDeposit($id: ID!, $prove: Boolean) {
   UserTotalDeposit(id: $id, prove: $prove) {
       id
   totalActiveDeposit
@@ -83,10 +81,10 @@ query UserTotalDeposit($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateUserTotalDeposit($input: UserTotalDepositInput) {
-  UserTotalDeposit(input, $input)
+mutation UpdateUserTotalDeposit($input: UserTotalDepositInput!) {
+  updateUserTotalDeposit(input: $input)
 }
-query Deposit($id: String!, $prove: Boolean) {
+query Deposit($id: ID!, $prove: Boolean) {
   Deposit(id: $id, prove: $prove) {
       id
   nftID
@@ -105,10 +103,10 @@ query Deposit($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateDeposit($input: DepositInput) {
-  Deposit(input, $input)
+mutation UpdateDeposit($input: DepositInput!) {
+  updateDeposit(input: $input)
 }
-query Funder($id: String!, $prove: Boolean) {
+query Funder($id: ID!, $prove: Boolean) {
   Funder(id: $id, prove: $prove) {
       id
   address
@@ -121,10 +119,10 @@ query Funder($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateFunder($input: FunderInput) {
-  Funder(input, $input)
+mutation UpdateFunder($input: FunderInput!) {
+  updateFunder(input: $input)
 }
-query FunderTotalInterest($id: String!, $prove: Boolean) {
+query FunderTotalInterest($id: ID!, $prove: Boolean) {
   FunderTotalInterest(id: $id, prove: $prove) {
       id
   totalDeficitFunded
@@ -138,10 +136,10 @@ query FunderTotalInterest($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateFunderTotalInterest($input: FunderTotalInterestInput) {
-  FunderTotalInterest(input, $input)
+mutation UpdateFunderTotalInterest($input: FunderTotalInterestInput!) {
+  updateFunderTotalInterest(input: $input)
 }
-query Funding($id: String!, $prove: Boolean) {
+query Funding($id: ID!, $prove: Boolean) {
   Funding(id: $id, prove: $prove) {
       id
   nftID
@@ -160,10 +158,10 @@ query Funding($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateFunding($input: FundingInput) {
-  Funding(input, $input)
+mutation UpdateFunding($input: FundingInput!) {
+  updateFunding(input: $input)
 }
-query MPHHolder($id: String!, $prove: Boolean) {
+query MPHHolder($id: ID!, $prove: Boolean) {
   MPHHolder(id: $id, prove: $prove) {
       id
   address
@@ -176,10 +174,10 @@ query MPHHolder($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateMPHHolder($input: MPHHolderInput) {
-  MPHHolder(input, $input)
+mutation UpdateMPHHolder($input: MPHHolderInput!) {
+  updateMPHHolder(input: $input)
 }
-query MPH($id: String!, $prove: Boolean) {
+query MPH($id: ID!, $prove: Boolean) {
   MPH(id: $id, prove: $prove) {
       id
   totalSupply
@@ -193,6 +191,6 @@ query MPH($id: String!, $prove: Boolean) {
 
 
 
-mutation UpdateMPH($input: MPHInput) {
-  MPH(input, $input)
+mutation UpdateMPH($input: MPHInput!) {
+  updateMPH(input: $input)
 }

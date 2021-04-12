@@ -15,9 +15,9 @@ import {
   FunderTotalInterest,
   Funding,
   MPHHolder,
-  MPH
+  MPH,
 } from "../generated/models/models";
-import { getPool, getUser, normalize } from "./utils";
+import { getPool, getUser, keccak256, normalize } from "./utils";
 type EDeposit = any;
 
 export function handleEDeposit(event: EDeposit): void {
@@ -384,7 +384,7 @@ export function handleESetParamAddress(event: ESetParamAddress): void {
 
 export function handleESetParamUint(event: ESetParamUint): void {
   let pool = getPool(event.address.toHex());
-  let poolContract = contracts.DInterest.bind(Address.fromString(pool.address));
+  let poolContract = DInterest.bind(Address.fromString(pool.address));
   let stablecoinContract = ERC20.bind(poolContract.stablecoin());
   let stablecoinDecimals: number = stablecoinContract.decimals();
   let stablecoinPrecision = new BigDecimal(tenPow(stablecoinDecimals));
@@ -416,9 +416,7 @@ export function handleBlock(block: ethereum.Block): void {
       let poolID = POOL_ADDRESSES[i];
       if (blockNumber >= POOL_DEPLOY_BLOCKS[i]) {
         let pool = getPool(poolID);
-        let poolContract = contracts.DInterest.bind(
-          Address.fromString(pool.address)
-        );
+        let poolContract = DInterest.bind(Address.fromString(pool.address));
         let stablecoinContract = ERC20.bind(poolContract.stablecoin());
         let stablecoinDecimals: number = stablecoinContract.decimals();
         let oracleContract = IInterestOracle.bind(

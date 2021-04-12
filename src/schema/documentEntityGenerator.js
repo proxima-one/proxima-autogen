@@ -16,7 +16,7 @@ function generateEntityGQLDocuments(schemaFile, outputFile = "") {
   let schemaText = generateDocuments(entities, entityDict);
 
   if (outputFile == "") {
-    outputFile = schemaFile.replace(".graphql", "-operations.graphql");
+    outputFile = schemaFile.replace(".graphql", "-operations.graphqls");
   }
 
   fs.outputFileSync(outputFile, schemaText);
@@ -129,7 +129,7 @@ function generateEntityModelStruct(entity) {
         name: variableName,
         type: variableType,
         isList: isList,
-        required: isRequired
+        required: isRequired,
       };
     }
   }
@@ -225,5 +225,5 @@ function ensureEntityIsOptimized(entity) {
 // }
 
 module.exports = {
-  generateEntityGQLDocuments
+  generateEntityGQLDocuments,
 };

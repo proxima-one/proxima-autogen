@@ -105,7 +105,11 @@ function getEntityName(entity) {
 function getEntityType(entity) {
   let objectType = entity.kind;
   let objectName = entity.name.value;
-  if (objectName == "Query" || objectName == "Mutation") {
+  if (
+    objectName == "Query" ||
+    objectName == "Mutation" ||
+    objectName == "Proof"
+  ) {
     return objectName.toLowerCase();
   }
   if (objectType == "InputObjectTypeDefinition") {
@@ -124,7 +128,11 @@ function generateEntityTestStructs(entities) {
   for (const entity of entities) {
     let entityType = getEntityType(entity);
     //console.log(entityType)
-    if (entityType == "mutation" || entityType == "query") {
+    if (
+      entityType == "mutation" ||
+      entityType == "query" ||
+      entityType == "proof"
+    ) {
       continue;
     }
     let name = getEntityName(entity);
@@ -232,7 +240,8 @@ function generateEntitiesText(entities, entityDict = {}) {
       entity.kind != "Query" &&
       entity.kind != "Mutation" &&
       entity.name.value != "Query" &&
-      entity.name.value != "Mutation"
+      entity.name.value != "Mutation" &&
+      entity.name.value != "Proof"
     ) {
       entityText += generateEntityText(entity, entityDict) + "\n";
       entityText += generateEntityInputText(entity, entityDict) + "\n";
@@ -242,7 +251,8 @@ function generateEntitiesText(entities, entityDict = {}) {
       entity.kind != "Query" &&
       entity.kind != "Mutation" &&
       entity.name.value != "Query" &&
-      entity.name.value != "Mutation"
+      entity.name.value != "Mutation" &&
+      entity.name.value != "Proof"
     ) {
       entityText += generateEntityInputText(entity, entities) + "\n";
     }
@@ -319,7 +329,8 @@ function generateEntitiesText(entities, entityDict = {}) {
       entity.kind != "Query" &&
       entity.kind != "Mutation" &&
       entity.name.value != "Query" &&
-      entity.name.value != "Mutation"
+      entity.name.value != "Mutation" &&
+      entity.name.value != "Proof"
     ) {
       entityText += generateEntityInputText(entity, entities) + "\n";
     }
@@ -371,7 +382,7 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
     field = field.type;
   }
   let name = field.name.value;
-  if (entityDict[name] && inputText == "") {
+  if (entityDict[name] && inputText == "" && fieldName != "proof") {
     name = name + inputText;
     let fieldResolver = "  @goField(forceResolver: true)";
     endText += fieldResolver;
@@ -379,6 +390,9 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
   }
 
   if (entityDict[name] && inputText == "Input") {
+    if (fieldName != "proof") {
+      return "";
+    }
     fieldName = name + "ID" + isList;
     name = "String";
   }
@@ -424,7 +438,8 @@ function generateQueryText(entities) {
       entity.kind != "Query" &&
       entity.kind != "Mutation" &&
       entity.name.value != "Query" &&
-      entity.name.value != "Mutation"
+      entity.name.value != "Mutation" &&
+      entity.name.value != "Proof"
     ) {
       queryText += generateGetQuery(entity);
       queryText += generateGetAllQuery(entity);
@@ -462,7 +477,7 @@ function generateGetQuery(entity) {
 function generateGetAllQuery(entity) {
   let entitiyGetAllQueryString =
     entity.name.value +
-    "s(where: String, order_by: String, asc: Int, first: Int, last: Int, limit: Int, prove: Boolean): [" +
+    "s(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [" +
     entity.name.value +
     "]!\n";
   return entitiyGetAllQueryString;
@@ -523,7 +538,8 @@ function generateTestQueryText(entities) {
       entity.kind != "Query" &&
       entity.kind != "Mutation" &&
       entity.name.value != "Query" &&
-      entity.name.value != "Mutation"
+      entity.name.value != "Mutation" &&
+      entity.name.value != "Proof"
     ) {
       app[entityName + "s"] = {
         get: generateTestGetQuery(entityName, entityText),

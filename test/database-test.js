@@ -47,7 +47,7 @@ async function databaseSetup() {
 
 function cleanup() {
   process.chdir("../../.");
-  fs.removeSync(destDir);
+  //fs.removeSync(destDir);
 }
 
 describe("database gen", async function () {

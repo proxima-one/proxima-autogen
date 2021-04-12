@@ -7,7 +7,7 @@
 	//getDefaults/getTheContextArgs
 	//from identifier,
 	//use to get from context
-	results, err := proximaIterables.Search(entities, args["where"], args["orderBy"], args["direction"], args["first"].(int), args["last"].(int), "")
+	results, err := proximaIterables.Search(entities, args["where"], args["orderBy"], args["direction"].(bool), args["first"].(int), args["last"].(int), "")
 	if err != nil {
 		return make([]*models.$OutputEntity, 0), nil
 	}
@@ -29,7 +29,7 @@
 			args["last"] = *last
 		}
 		if asc != nil {
-			args["direction"] = (*asc == 1)
+			args["direction"] = *asc
 		}
 		if orderBy != nil {
 			args["order_by"] = *orderBy
