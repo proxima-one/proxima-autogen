@@ -16,7 +16,7 @@ async function handlerGenSetup() {
   fs.copySync(testHandlerProjectPath, destDir);
   let config = yaml.safeLoad(fs.readFileSync(destDir + "/app-config.yml"));
   let schema_file = "schema.graphql";
-  //await autogen.processSchema({}, destDir + "/schema/" + schema_file);
+  await autogen.processSchema({}, destDir + "/schema/" + schema_file);
   process.chdir(destDir);
 
   return config;
@@ -25,11 +25,11 @@ async function handlerGenSetup() {
 function cleanup(testDir) {
   //go back to the regular stuff
   process.chdir("../../.");
-  fs.removeSync(testDir);
+  //fs.removeSync(testDir);
 }
 
-describe("Handlers", async function() {
-  afterEach(function() {
+describe("Handlers", async function () {
+  afterEach(function () {
     // runs each test in this block
     cleanup(destDir);
   });
@@ -51,7 +51,7 @@ describe("Handlers", async function() {
   //   // assert.equal(contractsExist, true);
   // });
 
-  it("should be able to generate typescript from schema", async function() {
+  it("should be able to generate typescript from schema", async function () {
     this.timeout(35000);
     let config = await handlerGenSetup();
     let resp = await autogen.generateSchemaTypescriptTemplates(config);

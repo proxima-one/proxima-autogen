@@ -129,6 +129,37 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
   return entityTemplateImports.toString() + processedText;
 }
 
+function typeScriptMockGenConfig(
+  typescriptOutputPath = "./DataAggregator/generated/models",
+  outputConfigGenFile = "./codegen.yml"
+) {
+  //
+  // overwrite: true
+  // schema: schema.graphql
+  // generates:
+  let fileOut = "./DataAggregator/generated/models/generated-mocks.ts";
+
+  let mockdata = {
+    typesFile: "./models.ts",
+    enumValues: "upper-case#upperCase",
+    typenames: "keep",
+    // scalars: {
+    //   BigDecimal: "number",
+    //   BigInt: "bigint",
+    // },
+  };
+
+  let plugins = [{ "typescript-mock-data": mockdata }];
+  //     plugins:
+  //       - typescript-mock-data:
+  //           typesFile:
+  //           enumValues: upper-case#upperCase
+  //           typenames: keep
+  //           scalars:
+  //             AWSTimestamp: unix_time # gets translated to casual.unix_times
+  return plugins;
+}
+
 function updateTypescriptGenConfiguration(
   schemaFile,
   typescriptOutputPath = "./DataAggregator/generated/models",
@@ -195,6 +226,13 @@ function updateTypescriptGenConfiguration(
   generateConfig[outTestFile] = {
     plugins: typeScriptTestPlugins,
     config: typeScriptTestConfig,
+  };
+
+  let outMocksFile = typescriptOutputPath + "/generated-mocks.ts";
+  let typescriptMockPlugins = typeScriptMockGenConfig();
+  generateConfig[outMocksFile] = {
+    plugins: typescriptMockPlugins,
+    config: typeScriptConfig,
   };
   let schemaFolder =
     schemaFile.substring(0, schemaFile.lastIndexOf("/")) + "/*.graphqls";

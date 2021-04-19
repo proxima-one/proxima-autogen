@@ -6,7 +6,7 @@ const fs = require("fs-extra");
 //IMPORTS
 const {
   schemaTypescriptGenerator,
-  ethTypescriptGenerator
+  ethTypescriptGenerator,
 } = require("./typescriptGenerators.js");
 
 async function generateEthereumTypescriptTemplates(app_config = {}) {
@@ -30,7 +30,7 @@ async function runCommandLineArgs(commandList) {
   let commandLineText = commandList.join(" && "); //map to add " && " between values join
   //console.log(commandLineText);
   let resp = await new Promise((resolve, reject) => {
-    exec(commandLineText, function(error, stdout, stderr) {
+    exec(commandLineText, function (error, stdout, stderr) {
       console.log("stdout: " + stdout);
       console.log("stderr: " + stderr);
       if (error !== null) {
@@ -54,7 +54,7 @@ async function runEthereumCommand(
     //"npm i  --save-dev typescript",
     //"npm install --save-dev typechain",
     "npm i  --save-dev ethers",
-    "npm i @typechain/ethers-v5"
+    "npm i @typechain/ethers-v5",
     //@typechain/truffle-v5 @typechain/web3-v1 @typechain/truffle-v4 @typechain/hardhat",
   ];
   //targetVersion = "../../node_modules/@typechain/ethers-v5";
@@ -99,11 +99,12 @@ async function runSchemaCommand(schemaFile, typescriptOutputPath) {
     "npm install --save @graphql-codegen/typescript",
     "npm install --save @graphql-codegen/typescript-operations",
     "npm install --save @graphql-codegen/typed-document-node",
-    "npm install --save @graphql-codegen/typescript-react-apollo",
-    "npm install --save-dev @graphql-codegen/typescript-graphql-request"
+    //"npm install --save @graphql-codegen/typescript-mock-data",
+    //"npm install --save @graphql-codegen/typescript-react-apollo",
+    "npm install --save-dev graphql-codegen-typescript-mock-data",
   ];
 
-  let res = await runCommandLineArgs(installArgs);
+  //let res = await runCommandLineArgs(installArgs);
 
   let genArg = "npx graphql-codegen --config ./codegen.yml";
   let resp = await runCommandLineArgs([genArg]);
@@ -120,5 +121,5 @@ function generateProximaSDKVertexClient(config) {
 module.exports = {
   generateProximaSDKVertexClient,
   generateEthereumTypescriptTemplates,
-  generateSchemaTypescriptTemplates
+  generateSchemaTypescriptTemplates,
 };
