@@ -390,7 +390,7 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
   }
 
   if (entityDict[name] && inputText == "Input") {
-    if (fieldName != "proof") {
+    if (fieldName == "proof") {
       return "";
     }
     fieldName = name + "ID" + isList;
@@ -452,7 +452,7 @@ function generateQueryText(entities) {
 
 function generateMutation(entity) {
   let entityMutation =
-    "update" +
+    "Update" +
     entity.name.value +
     "(input: " +
     entity.name.value +

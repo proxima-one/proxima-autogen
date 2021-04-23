@@ -38,6 +38,7 @@ async function updateGoModels(config, modelsFile) {
   }
 
   newModelText = newModelText.split(proofStr).join(newProofStr);
+  newModelText = addOmitEmptyJSON(newModelText.toString());
   //console.log(newModelText.toString());
   fs.outputFileSync(modelsFile, newModelText.toString()); //write the file
 }
@@ -54,6 +55,10 @@ function generateEntityModelStructs(entities, entityDict = {}) {
   return entityModelStructs;
 }
 
+function addOmitEmptyJSON(strings) {
+  newContents = strings.Replace(newContents, '"`', ',omitempty"`', -1);
+  return newContents;
+}
 function isEntity(name, entity) {
   if (
     name == "Proof" ||
@@ -184,6 +189,9 @@ function ensureEntityIsCorrect(entity) {
   }
   return entity;
 }
+
+//json omitempty
+//
 
 function ensureEntityIsOptimized(entity) {
   //directives

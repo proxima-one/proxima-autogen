@@ -44,7 +44,7 @@
     "@typechain/ethers-v4": "^4.0.0",
     "@typechain/ethers-v5": "^4.0.0",
     "@types/react": "^17.0.3",
-    "ethers": "^5.1.2",
+    "ethers": "^5.1.3",
     "graphql": "^15.5.0",
     "graphql-codegen": "^0.4.0",
     "graphql-codegen-typescript-mock-data": "^1.5.1",

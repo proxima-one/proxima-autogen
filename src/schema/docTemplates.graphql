@@ -5,5 +5,5 @@ query $name($$varName: ID!, $prove: Boolean) {
 }
 ####
 mutation Update$name($$varName: $nameInput!) {
-  update$name($varName: $$varName)
+  Update$name($varName: $$varName)
 }

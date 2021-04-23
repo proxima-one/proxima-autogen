@@ -64,17 +64,17 @@ function processEthereumTypescriptTemplate(
   let temp = file.split("/");
 
   let name = temp[temp.length - 1].replace(".d.ts", "");
-
+  //get them from factories
   let placementString =
     'import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";\n\n';
   let newStr = "";
-  let eStr = "export type $eventname = $entityName.$eventname\n";
-  for (var e of events) {
-    //  let e = events[i];
-    //console.log(i);
-    //console.log(e);
-    newStr += eStr.split("$eventname").join(e);
-  }
+  // let eStr = "export type $eventname = $entityName.$eventname\n";
+  // for (var e of events) {
+  //   //  let e = events[i];
+  //   //console.log(i);
+  //   //console.log(e);
+  //   newStr += eStr.split("$eventname").join(e);
+  // }
   newStr = newStr.split("$entityName").join(name);
   newStr += "\n" + placementString;
   return fileText; //fileText.split(placementString).join(newStr);

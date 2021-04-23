@@ -28,7 +28,7 @@ function generate(appConfig, tables) {
 
 function parseSchema(schema) {
   let tables = [];
-  parse(schema).definitions.forEach(ast => {
+  parse(schema).definitions.forEach((ast) => {
     if (
       ast.kind == "ObjectTypeDefinition" &&
       ast.name.value != "Query" &&
@@ -68,6 +68,8 @@ function application(dbName, config) {
     "  sleep: " +
     config.config.sleep +
     "\n" +
+    "  cacheExpiration: 5m" +
+    "\n" +
     "tables:\n";
   return appString;
 }
@@ -93,7 +95,7 @@ function defaultConfig(config) {
     cache: cache,
     sleep: sleep,
     compression: compression,
-    batching: batching
+    batching: batching,
   };
   return newConfig;
 }
