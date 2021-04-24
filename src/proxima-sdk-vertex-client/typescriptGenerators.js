@@ -35,50 +35,132 @@ function getEvents(fileText) {
 
 function updateEthereumTypescriptTypes(schemaFile, typescriptOutputPath) {
   let templateFile = ethereumTypescriptTemplate;
+  let templates = templateFile.toString().split("####");
   let files = fs.readdirSync(typescriptOutputPath); //get files from typescriptOutputPath?
+  var factories = [];
+  var factoryPath = "";
+  let indexText = "";
+  let indexFile = "";
 
   for (const f of files) {
     let file = typescriptOutputPath + "/" + f.toString();
-    if (fs.pathExistsSync(file) && file.toString().includes(".d.ts")) {
+
+    if (file.toString().includes("factories")) {
+      factoryPath = file.toString();
+      factories = fs.readdirSync(file.toString());
+    }
+    if (fs.pathExistsSync(file) && file.toString().includes("index.ts")) {
+      indexFile = file.toString();
+      indexText = fs.readFileSync(file).toString();
+    }
+  }
+
+  for (const f of factories) {
+    let file = factoryPath + "/" + f.toString();
+    if (fs.pathExistsSync(file) && file.toString().includes(".ts")) {
       let fileText = fs.readFileSync(file).toString();
-      let events = getEvents(fileText);
       let newFileText = processEthereumTypescriptTemplate(
         file,
         templateFile,
-        fileText,
-        events
+        fileText
       );
+      let temp = file.split("/");
+      //let events = getEvents(fileText);
+      let name = temp[temp.length - 1].replace(".ts", "").split("_")[0];
+
+      indexText = processIndexFactoryExportText(name, indexText);
       fs.outputFileSync(file, newFileText);
     }
   }
+  fs.outputFileSync(indexFile, indexText.toString());
 }
 
 function processEthereumTypescriptTemplate(
   file,
   templateString,
   fileText,
-  events
+  events = []
 ) {
   // let oldStr = "attach(addressOrName: string): this;";
   //get the events, string
+  let templateFile = ethereumTypescriptTemplate;
+  let templates = templateFile.toString().split("####");
   let temp = file.split("/");
+  //let events = getEvents(fileText);
+  let name = temp[temp.length - 1].replace(".ts", "").split("_")[0];
+  let additionalImports =
+    'import { Contract, ethers, Signer } from "ethers";\n'; //templates
+  let factoryFnsTemplate = templates[1]; //templates
 
-  let name = temp[temp.length - 1].replace(".d.ts", "");
-  //get them from factories
-  let placementString =
-    'import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";\n\n';
-  let newStr = "";
-  // let eStr = "export type $eventname = $entityName.$eventname\n";
-  // for (var e of events) {
-  //   //  let e = events[i];
-  //   //console.log(i);
-  //   //console.log(e);
-  //   newStr += eStr.split("$eventname").join(e);
-  // }
-  newStr = newStr.split("$entityName").join(name);
-  newStr += "\n" + placementString;
+  //add the imports
+  let unwantedImports = 'import { Contract, Signer } from "ethers";\n';
+  fileText = fileText.replace(unwantedImports, additionalImports);
+
+  let constructorPlacementStr = "export class " + name + "__factory {\n"; //
+  let factoryFnText = factoryFnsTemplate.split("$entityName").join(name);
+  fileText = fileText.replace(
+    constructorPlacementStr,
+    constructorPlacementStr + "\n" + factoryFnText
+  );
+
+  //fileText = fileText.replace(unwantedImports, "//" + unwantedImports + "\n");
+
   return fileText; //fileText.split(placementString).join(newStr);
 }
+
+function processIndexFactoryExportText(name, indexText) {
+  let templateFile = ethereumTypescriptTemplate;
+  let templates = templateFile.toString().split("####");
+  let templateEntityExportString = "export type { $name }"; //templates[3]; //templates[0];
+  let templateFactoryExportString = "export { $name__factory }"; //templates[4];
+  let templateNewFactoryExportString = templates[2];
+  let newExportText = templateNewFactoryExportString.split("$name").join(name);
+  let oldExportText = templateFactoryExportString.split("$name").join(name);
+  let unwantedExports = [templateEntityExportString.split("$name").join(name)];
+
+  for (const e of unwantedExports) {
+    indexText = indexText.replace(e, "//" + e);
+  }
+  let newIndexText = indexText.replace(
+    oldExportText,
+    newExportText + "\n" + "//" + oldExportText
+  );
+  return newIndexText;
+}
+
+// function updateEthereumTypescriptIndex(file, templateString, fileText, events) {
+//   //getFactory Files/fileNames
+// }
+
+//for each factory
+
+//get the name of the factory
+//get the replacement (for the name )
+//get the replacement for the name
+
+//correct imports
+
+//correct placement of the bindings
+
+// function updateEthereumTypescriptIndex(schemaFile, typescriptOutputPath) {
+//   let templateFile = ethereumTypescriptTemplate;
+//   let files = fs.readdirSync(typescriptOutputPath); //get files from typescriptOutputPath?
+//
+//   for (const f of files) {
+//     let file = typescriptOutputPath + "/" + f.toString();
+//     if (fs.pathExistsSync(file) && file.toString().includes(".d.ts")) {
+//       let fileText = fs.readFileSync(file).toString();
+//       let events = getEvents(fileText);
+//       let newFileText = processEthereumTypescriptTemplate(
+//         file,
+//         templateFile,
+//         fileText,
+//         events
+//       );
+//       fs.outputFileSync(file, newFileText);
+//     }
+//   }
+// }
 
 function updateSchemaTypescriptTypes(schemaFile, typescriptOutputPath) {
   if (!typescriptOutputPath.includes(".ts")) {

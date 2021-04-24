@@ -5,15 +5,17 @@ import { Provider } from "@ethersproject/providers";
 
 import { DInterest } from "../DInterest";
 ####
-static bind(address: string, provider?: Signer | Provider): DInterest {
+static bind(address: string, provider?: Signer | Provider): $entityName {
   if (!provider) {
     provider = ethers.getDefaultProvider("mainnet");
   }
-  return new Contract(address, _abi, provider) as DInterest;
+  return new Contract(address, _abi, provider) as $entityName;
 }
 ####
 export {
   $name__factory as $name
 } from "./factories/$name__factory";
 ####
-//export { $name } from "./$name";
+export { $name }
+####
+export { $name__factory }
