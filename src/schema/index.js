@@ -46,5 +46,6 @@ module.exports = {
   processSchema: processSchema,
   createTestEntities: createTestEntities,
   createTestQueries: createTestQueries,
-  getEntities: processer.getEntities
+  getEntities: processer.getEntities,
+  getEntityObjects: processer.getEntityObjects,
 };

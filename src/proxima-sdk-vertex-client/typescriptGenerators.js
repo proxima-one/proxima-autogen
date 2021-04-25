@@ -3,11 +3,12 @@
 //path to config templates
 const yaml = require("js-yaml");
 const fs = require("fs-extra");
+const schemaGen = require("../schema/index.js");
 
 const schemaGenConfigTemplateFilePath = require.resolve(
   "./schemaGenConfigTemplate.yml"
 );
-const dataloaderGen = require("../data-vertex-node/index.js");
+//const dataloaderGen = require("../data-vertex-node/index.js");
 
 //schemaEntityTemplate //template
 const schemaTypescriptTemplate = fs.readFileSync(
@@ -179,36 +180,87 @@ function updateSchemaTypescriptTypes(schemaFile, typescriptOutputPath) {
 }
 
 function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
-  let entities = dataloaderGen.getDataloaders({}, schemaFile);
+  //let entities = dataloaderGen.getDataloaders({}, schemaFile);
+  let entityStructs = schemaGen.getEntityObjects({}, schemaFile);
+
   let processedText = fileText;
-  //console.log(fileText);
+  console.log(fileText);
   let templateList = entityTemplate.toString().split("####");
   let entityTemplateImports = templateList[0];
-  let entityFnTemplate = templateList[1];
-  let entityGeneralTemplate = templateList[2];
-  for (const [name, entity] of Object.entries(entities)) {
-    let eOldStr = "typename?: '$EntityName';\n"
+  let entityInputTemplate = templateList[1];
+  let toInputFnTemplate = templateList[2];
+  let toEntityFnTemplate = templateList[3];
+  let entityFnTemplate = templateList[4];
+  let entityGeneralTemplate = templateList[5];
+
+  for (const [name, entity] of Object.entries(entityStructs)) {
+    let eOldStr = 'typename?: "$EntityName";\n'
       .split("$EntityName")
       .join(entity.entityName);
-
-    let entityNewStr = entityFnTemplate;
-
+    let entityNewStr = entityFnTemplate + "};\n";
     let processedTextList = processedText.split(eOldStr);
-
-    processedTextList[1] = processedTextList[1].replace(
-      "};\n",
-      entityFnTemplate + "};\n"
-    );
+    let entityFnStr = toEntityFnText(name, entity, toEntityFnTemplate);
+    let inputFnStr = toEntityInputFnText(name, entity, toInputFnTemplate);
+    entityNewStr += "\n\n" + entityFnStr + "\n" + inputFnStr + "\n";
+    processedTextList[1] = processedTextList[1].replace("};\n", entityNewStr);
 
     processedText = processedTextList
       .join(eOldStr)
       .split("$EntityName")
       .join(entity.entityName);
+
+    let inputOldStr = entity.entityName + "Input = {\n";
+    let inputNewStr = entityInputTemplate
+      .split("$EntityName")
+      .join(entity.entityName);
+    processedText = processedText.replace(inputOldStr, inputNewStr);
   }
 
   processedText += entityGeneralTemplate;
   //console.log(entityTemplateImports);
   return entityTemplateImports.toString() + processedText;
+}
+
+//toSaveArgs()
+
+//toLoadArgs()
+
+function toEntityInputFnText(name, entity, template = "") {
+  let fnText = ""; //from template
+  let fnTemplateNames = "";
+  for (const [name, variable] of Object.entries(entity)) {
+    let propertyName = variable.name;
+    let typeProp = variable.type;
+    let isList = variable.isList;
+    let objName = "$propertyName = parse$Type(obj.$propertyName) \n";
+    objName = objName
+      .split("$propertyName")
+      .join(propertyName)
+      .replace("$Type", typeProp);
+    fnTemplateNames += objName;
+  }
+  let fnTemplatePlacementString = "$FNBODY"; //placement string
+  fnText = fnText.replace(fnTemplatePlacementString, fnTemplateNames);
+  return fnText;
+}
+
+function toEntityFnText(name, entity, template = "") {
+  let fnText = ""; //different template
+  let fnTemplateNames = "";
+  for (const [name, variable] of Object.entries(entity)) {
+    let propertyName = variable.name;
+    let typeProp = variable.type;
+    let isList = variable.isList;
+    let objName = "obj.$propertyName = parse$Type(objInput.$propertyName) \n";
+    objName = objName
+      .split("$propertyName")
+      .join(propertyName)
+      .replace("$Type", typeProp);
+    fnTemplateNames += objName;
+  }
+  let fnTemplatePlacementString = "$FNBODY"; //placement string
+  fnText = fnText.replace(fnTemplatePlacementString, fnTemplateNames);
+  return fnText;
 }
 
 function typeScriptMockGenConfig(
@@ -254,8 +306,6 @@ function updateTypescriptGenConfiguration(
   let declarationKind = {
     type: "class",
     input: "type",
-    query: "interface",
-    mutation: "interface",
   };
   let typeScriptPlugins = [
     "typescript",

@@ -20,16 +20,55 @@ function processSchema(schemaFile) {
   fs.outputFileSync(schemaFile, schemaText);
 }
 
-function getEntities(config) {
+function getEntities(config, typeStr = "") {
   //console.log("Entity config for schema.file");
   //console.log(config);
   let schemaFile = config.schema.file;
   let schema = fs.readFileSync(schemaFile).toString();
   let entities = parseSchema(schema);
-  entities = checkEntities(entities);
+  entities = checkEntities(entities, typeStr);
   let entitiesDict = makeDict(entities);
   return entitiesDict;
 }
+
+function getEntityObjects(config, schemaFile = "", typeStr = "") {
+  if (schemaFile == "" && len(schemaFile) == 0) {
+    schemaFile = config.schema.file;
+  }
+  let schema = fs.readFileSync(schemaFile).toString();
+  let entities = parseSchema(schema);
+  entities = checkEntities(entities);
+  let entitiesDict = makeDict(entities, typeStr);
+  for (const [name, entity] of Object.entries(entitiesDict)) {
+    entitiesDict[name] = generateEntityTestStruct(entity);
+  }
+  return entitiesDict;
+}
+
+function isEntityofType(entity, typeStr) {
+  let entityType = getEntityType(entity);
+  let isEntity = entityType == "entity";
+  let isInput = entityType == "entityInput";
+  let isFunction = entityType == "mutation" || entityType == "query";
+  switch (typeStr) {
+    case "object":
+      return isEntity || isInput;
+    case "entity":
+      return isEntity && !isInput;
+    case "input":
+      return isInput && !isEntity;
+    default:
+      return true;
+  }
+}
+
+//isEntity
+
+//isInput
+
+//isObject
+
+//isFunction
 
 function createTestEntities(inputSchemaFile, outputJSONFile) {
   let schema = fs.readFileSync(inputSchemaFile).toString();
@@ -136,12 +175,12 @@ function generateEntityTestStructs(entities) {
       continue;
     }
     let name = getEntityName(entity);
-    let completeTestStruct = { name: name };
+    let cTestStruct = { name: name };
     if (completeTestStructs[name]) {
-      completeTestStruct = completeTestStructs[name];
+      cTestStruct = completeTestStructs[name];
     }
-    completeTestStruct[entityType] = generateEntityTestStruct(entity);
-    completeTestStructs[name] = completeTestStruct;
+    cTestStruct[entityType] = generateEntityTestStruct(entity);
+    completeTestStructs[name] = cTestStruct;
     if (entityType == "entity") {
       let entityTestFns = generateEntityTestFunctions(entity);
       completeTestStructs[name].operations = entityTestFns;
@@ -260,10 +299,12 @@ function generateEntitiesText(entities, entityDict = {}) {
   return entityText;
 }
 
-function makeDict(entities) {
+function makeDict(entities, typeStr = "") {
   let entityDict = {};
   for (const entity of entities) {
-    entityDict[entity.name.value] = entity;
+    if (isEntityofType(entity, typeStr)) {
+      entityDict[entity.name.value] = entity;
+    }
   }
   return entityDict;
 }
@@ -368,6 +409,7 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
   let fieldName = field.name.value;
   let isList = "";
   let fieldText = ": ";
+  let returnStr = "";
   let endText = "";
   field = field.type;
   while (field.kind && field.kind != "NamedType") {
@@ -382,21 +424,29 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
     field = field.type;
   }
   let name = field.name.value;
-  if (entityDict[name] && inputText == "" && fieldName != "proof") {
-    name = name + inputText;
-    let fieldResolver = "  @goField(forceResolver: true)";
-    endText += fieldResolver;
-    //addHere
-  }
 
-  if (entityDict[name] && inputText == "Input") {
-    if (fieldName == "proof") {
-      return "";
+  if (entityDict[name] && fieldName != "proof") {
+    //
+    if (inputText == "") {
+      let entityName = name + inputText;
+      let fieldResolver = "  @goField(forceResolver: true)";
+      let entityEndText = endText + fieldResolver;
+      returnStr += fieldName + fieldText + entityName + entityEndText + "\n";
     }
+
     fieldName = name + "ID" + isList;
     name = "String";
+    //name
   }
-  return fieldName + fieldText + name + endText;
+
+  if (entityDict[name] && fieldName == "proof") {
+    if (inputText == "Input") {
+      return "";
+    }
+  }
+
+  returnStr += fieldName + fieldText + name + endText;
+  return returnStr;
 }
 
 //processInput
@@ -557,4 +607,5 @@ module.exports = {
   createTestEntities,
   createTestQueries,
   getEntities,
+  getEntityObjects,
 };

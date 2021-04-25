@@ -120,9 +120,10 @@ function generateJSONLine(name, varType, isList, isRequired, field = {}) {
   }
   let nameLower = name.charAt(0).toLowerCase() + name.slice(1);
   let nameUpper = name.charAt(0).toUpperCase() + name.slice(1) + "ID" + listStr; //add on ids
-  let jsonStr = '`json:"' + nameLower + "Id" + listStr + '"`'; //this is lowercase name + id/ids
-  let returnV = "  " + nameUpper + `    ` + typStr + `    ` + jsonStr + "\n";
+  //let jsonStr = '`json:"' + nameLower + "Id" + listStr + '"`'; //this is lowercase name + id/ids
+  //let returnV = "  " + nameUpper + `    ` + typStr + `    ` + jsonStr + "\n";
   //console.log(field);
+  returnV = "";
   //console.log(returnV);
   return returnV;
 }

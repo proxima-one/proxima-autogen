@@ -3,17 +3,13 @@ scalar BigDecimal
 scalar BigInt
 type Query {
 ConversionRate(id: ID!, prove: Boolean): ConversionRate!
-ConversionRates(where: String, order_by: String, asc: Int, first: Int, last: Int, limit: Int, prove: Boolean): [ConversionRate]!
+ConversionRates(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [ConversionRate]!
 ConversionRateSearch(queryText: String!, prove: Boolean): [ConversionRate]!
-Proof(id: ID!, prove: Boolean): Proof!
-Proofs(where: String, order_by: String, asc: Int, first: Int, last: Int, limit: Int, prove: Boolean): [Proof]!
-ProofSearch(queryText: String!, prove: Boolean): [Proof]!
 
 }
 
 type Mutation {
-updateConversionRate(input: ConversionRateInput!): Boolean 
-updateProof(input: ProofInput!): Boolean 
+UpdateConversionRate(input: ConversionRateInput!): Boolean 
 
 }
 
@@ -23,7 +19,7 @@ rateSell: Float
 rateBuy: Float
 spread: [Float]
 spreadPercent: Float
-proof: Proof  @goField(forceResolver: true)
+proof: Proof
 } 
 
 input ConversionRateInput {
@@ -32,7 +28,7 @@ rateSell: Float
 rateBuy: Float
 spread: [Float]
 spreadPercent: Float
-ProofID: String
+
 }
 
 type Proof {
