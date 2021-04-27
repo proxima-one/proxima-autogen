@@ -31,7 +31,7 @@ function getEntities(config, typeStr = "") {
   return entitiesDict;
 }
 
-function getEntityObjects(config, schemaFile = "", typeStr = "") {
+function getEntityObjects(config, schemaFile = "", typeStr = "entity") {
   if (schemaFile == "" && len(schemaFile) == 0) {
     schemaFile = config.schema.file;
   }
@@ -40,7 +40,12 @@ function getEntityObjects(config, schemaFile = "", typeStr = "") {
   entities = checkEntities(entities);
   let entitiesDict = makeDict(entities, typeStr);
   for (const [name, entity] of Object.entries(entitiesDict)) {
-    entitiesDict[name] = generateEntityTestStruct(entity);
+    if (entitiesDict[name] == {}) {
+      delete entitiesDict[name];
+      continue;
+    } else {
+      entitiesDict[name] = generateEntityTestStruct(entity);
+    }
   }
   return entitiesDict;
 }
@@ -393,11 +398,19 @@ function generateEntityText(entity, entityDict = {}) {
   //field.kind == 'NonNullableType'
   //List Type  [], then get the name of the
   let hasProof = false;
+  let pastFieldNames = {};
   for (const field of entity.fields) {
     if (field.name.value == "proof") {
       hasProof = true;
     }
-    entityText += processFieldDefinition(field, entityDict) + "\n";
+    let fieldText = processFieldDefinition(
+      field,
+      entityDict,
+      "",
+      pastFieldNames
+    );
+    entityText = entityText.split(fieldText).join("");
+    entityText += fieldText + "\n";
   }
   if (!hasProof && !entity.name.value.includes("Input")) {
     entityText += "proof: Proof \n";
@@ -405,8 +418,17 @@ function generateEntityText(entity, entityDict = {}) {
   return entityText + "} \n";
 }
 
-function processFieldDefinition(field, entityDict = {}, inputText = "") {
+function processFieldDefinition(
+  field,
+  entityDict = {},
+  inputText = "",
+  pastFieldNames = {}
+) {
   let fieldName = field.name.value;
+  if (pastFieldNames[fieldName]) {
+    return "";
+  }
+  let scalarsDict = "BigInt";
   let isList = "";
   let fieldText = ": ";
   let returnStr = "";
@@ -425,16 +447,23 @@ function processFieldDefinition(field, entityDict = {}, inputText = "") {
   }
   let name = field.name.value;
 
-  if (entityDict[name] && fieldName != "proof") {
+  if (
+    entityDict[name] &&
+    fieldName != "proof" &&
+    name != "BigInt" &&
+    name != "BigDecimal"
+  ) {
     //
     if (inputText == "") {
       let entityName = name + inputText;
       let fieldResolver = "  @goField(forceResolver: true)";
       let entityEndText = endText + fieldResolver;
       returnStr += fieldName + fieldText + entityName + entityEndText + "\n";
+      pastFieldNames[fieldName] = true;
     }
 
     fieldName = name + "ID" + isList;
+    pastFieldNames[fieldName] = true;
     name = "String";
     //name
   }
@@ -474,7 +503,11 @@ function processJSONFieldDefinition(field) {
 function generateEntityInputText(entity, entityDict = {}) {
   let inputText = "input " + entity.name.value + "Input {\n";
   for (const field of entity.fields) {
-    inputText += processFieldDefinition(field, entityDict, "Input") + "\n";
+    //inputText += processFieldDefinition(field, entityDict, "Input") + "\n";
+
+    let fieldText = processFieldDefinition(field, entityDict, "Input");
+    inputText = inputText.split(fieldText).join("");
+    inputText += fieldText + "\n";
   }
   return inputText + "}\n";
 }

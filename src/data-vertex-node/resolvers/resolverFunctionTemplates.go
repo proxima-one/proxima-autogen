@@ -1,5 +1,3 @@
-// func (r *dPoolResolver) $EntityNames(ctx context.Context, obj *models.DPool) ([]*models.User, error) {
-	//determine which set of ids to get
 	entities, _ := dataloader.For(ctx).$loaderName.LoadAll(obj.$input)
 	var args map[string]interface{} = graphql.GetFieldContext(ctx).Args
 	//check argument context
@@ -14,7 +12,6 @@
 	return results.([]*models.$OutputEntity), nil
 //}
 ####
-// func (r *queryResolver) $EntityNames(ctx context.Context, where *string, orderBy *string, direction *bool, first *int, last *int, limit *int, prove *bool) ([]*models.$EntityName, error) {
 		args := DefaultInputs
 		if prove != nil {
 			args["prove"] = *prove
@@ -56,7 +53,6 @@
 	return value, nil
 //}
 ####
-//func (r *queryResolver) DPoolList(ctx context.Context, id string, prove *bool) (*models.DPoolList, error) {
 	args := DefaultInputs
 	if prove != nil {
 		args["prove"] = *prove

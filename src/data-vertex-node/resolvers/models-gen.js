@@ -55,9 +55,8 @@ function generateEntityModelStructs(entities, entityDict = {}) {
   return entityModelStructs;
 }
 
-function addOmitEmptyJSON(strings) {
-  newContents = strings.Replace(newContents, '"`', ',omitempty"`', -1);
-  return newContents;
+function addOmitEmptyJSON(newContents) {
+  return newContents.split('"`').join(',omitempty"`');
 }
 function isEntity(name, entity) {
   if (
@@ -123,7 +122,7 @@ function generateJSONLine(name, varType, isList, isRequired, field = {}) {
   //let jsonStr = '`json:"' + nameLower + "Id" + listStr + '"`'; //this is lowercase name + id/ids
   //let returnV = "  " + nameUpper + `    ` + typStr + `    ` + jsonStr + "\n";
   //console.log(field);
-  returnV = "";
+  let returnV = "";
   //console.log(returnV);
   return returnV;
 }

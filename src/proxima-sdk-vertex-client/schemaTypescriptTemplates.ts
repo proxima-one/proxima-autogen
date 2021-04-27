@@ -2,7 +2,7 @@ import {useFetch} from "../../lib/DataVertexClient";
 //import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 ####
 $EntityNameInput = {
-  __typename?: "$EntityNameInput";
+  __typename?: '$EntityNameInput';
 ####
 export function to$EntityNameInput(obj: $EntityName): $EntityNameInput {
   let objInput: $EntityNameInput = {

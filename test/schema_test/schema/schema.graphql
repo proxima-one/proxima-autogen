@@ -1,351 +1,544 @@
-
 scalar BigDecimal
 scalar BigInt
 type Query {
-DPoolList(id: ID!, prove: Boolean): DPoolList!
-DPoolLists(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [DPoolList]!
-DPoolListSearch(queryText: String!, prove: Boolean): [DPoolList]!
-DPool(id: ID!, prove: Boolean): DPool!
-DPools(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [DPool]!
-DPoolSearch(queryText: String!, prove: Boolean): [DPool]!
-User(id: ID!, prove: Boolean): User!
-Users(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [User]!
-UserSearch(queryText: String!, prove: Boolean): [User]!
-UserTotalDeposit(id: ID!, prove: Boolean): UserTotalDeposit!
-UserTotalDeposits(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [UserTotalDeposit]!
-UserTotalDepositSearch(queryText: String!, prove: Boolean): [UserTotalDeposit]!
-Deposit(id: ID!, prove: Boolean): Deposit!
-Deposits(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [Deposit]!
-DepositSearch(queryText: String!, prove: Boolean): [Deposit]!
-Funder(id: ID!, prove: Boolean): Funder!
-Funders(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [Funder]!
-FunderSearch(queryText: String!, prove: Boolean): [Funder]!
-FunderTotalInterest(id: ID!, prove: Boolean): FunderTotalInterest!
-FunderTotalInterests(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [FunderTotalInterest]!
-FunderTotalInterestSearch(queryText: String!, prove: Boolean): [FunderTotalInterest]!
-Funding(id: ID!, prove: Boolean): Funding!
-Fundings(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [Funding]!
-FundingSearch(queryText: String!, prove: Boolean): [Funding]!
-MPHHolder(id: ID!, prove: Boolean): MPHHolder!
-MPHHolders(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [MPHHolder]!
-MPHHolderSearch(queryText: String!, prove: Boolean): [MPHHolder]!
-MPH(id: ID!, prove: Boolean): MPH!
-MPHs(where: String, order_by: String, asc: Boolean, first: Int, last: Int, limit: Int, prove: Boolean): [MPH]!
-MPHSearch(queryText: String!, prove: Boolean): [MPH]!
-
+  DPoolList(id: ID!, prove: Boolean): DPoolList!
+  DPoolLists(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [DPoolList]!
+  DPoolListSearch(queryText: String!, prove: Boolean): [DPoolList]!
+  DPool(id: ID!, prove: Boolean): DPool!
+  DPools(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [DPool]!
+  DPoolSearch(queryText: String!, prove: Boolean): [DPool]!
+  User(id: ID!, prove: Boolean): User!
+  Users(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [User]!
+  UserSearch(queryText: String!, prove: Boolean): [User]!
+  UserTotalDeposit(id: ID!, prove: Boolean): UserTotalDeposit!
+  UserTotalDeposits(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [UserTotalDeposit]!
+  UserTotalDepositSearch(
+    queryText: String!
+    prove: Boolean
+  ): [UserTotalDeposit]!
+  Deposit(id: ID!, prove: Boolean): Deposit!
+  Deposits(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [Deposit]!
+  DepositSearch(queryText: String!, prove: Boolean): [Deposit]!
+  Funder(id: ID!, prove: Boolean): Funder!
+  Funders(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [Funder]!
+  FunderSearch(queryText: String!, prove: Boolean): [Funder]!
+  FunderTotalInterest(id: ID!, prove: Boolean): FunderTotalInterest!
+  FunderTotalInterests(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [FunderTotalInterest]!
+  FunderTotalInterestSearch(
+    queryText: String!
+    prove: Boolean
+  ): [FunderTotalInterest]!
+  Funding(id: ID!, prove: Boolean): Funding!
+  Fundings(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [Funding]!
+  FundingSearch(queryText: String!, prove: Boolean): [Funding]!
+  MPHHolder(id: ID!, prove: Boolean): MPHHolder!
+  MPHHolders(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [MPHHolder]!
+  MPHHolderSearch(queryText: String!, prove: Boolean): [MPHHolder]!
+  MPH(id: ID!, prove: Boolean): MPH!
+  MPHs(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [MPH]!
+  MPHSearch(queryText: String!, prove: Boolean): [MPH]!
+  Vest(id: ID!, prove: Boolean): Vest!
+  Vests(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [Vest]!
+  VestSearch(queryText: String!, prove: Boolean): [Vest]!
+  FractionalDeposit(id: ID!, prove: Boolean): FractionalDeposit!
+  FractionalDeposits(
+    where: String
+    order_by: String
+    asc: Boolean
+    first: Int
+    last: Int
+    limit: Int
+    prove: Boolean
+  ): [FractionalDeposit]!
+  FractionalDepositSearch(
+    queryText: String!
+    prove: Boolean
+  ): [FractionalDeposit]!
 }
 
 type Mutation {
-UpdateDPoolList(input: DPoolListInput!): Boolean 
-UpdateDPool(input: DPoolInput!): Boolean 
-UpdateUser(input: UserInput!): Boolean 
-UpdateUserTotalDeposit(input: UserTotalDepositInput!): Boolean 
-UpdateDeposit(input: DepositInput!): Boolean 
-UpdateFunder(input: FunderInput!): Boolean 
-UpdateFunderTotalInterest(input: FunderTotalInterestInput!): Boolean 
-UpdateFunding(input: FundingInput!): Boolean 
-UpdateMPHHolder(input: MPHHolderInput!): Boolean 
-UpdateMPH(input: MPHInput!): Boolean 
-
+  UpdateDPoolList(input: DPoolListInput!): Boolean
+  UpdateDPool(input: DPoolInput!): Boolean
+  UpdateUser(input: UserInput!): Boolean
+  UpdateUserTotalDeposit(input: UserTotalDepositInput!): Boolean
+  UpdateDeposit(input: DepositInput!): Boolean
+  UpdateFunder(input: FunderInput!): Boolean
+  UpdateFunderTotalInterest(input: FunderTotalInterestInput!): Boolean
+  UpdateFunding(input: FundingInput!): Boolean
+  UpdateMPHHolder(input: MPHHolderInput!): Boolean
+  UpdateMPH(input: MPHInput!): Boolean
+  UpdateVest(input: VestInput!): Boolean
+  UpdateFractionalDeposit(input: FractionalDepositInput!): Boolean
 }
 
 type DPoolList {
-id: ID
-pools: [DPool]  @goField(forceResolver: true)
-DPoolIDs: [String]
-numPools: Int
-numUsers: Int
-numActiveUsers: Int
-numFunders: Int
-proof: Proof 
-} 
+  id: ID
+  pools: [DPool] @goField(forceResolver: true)
+  DPoolIDs: [String]
+
+  numPools: BigInt
+  numUsers: BigInt
+  numActiveUsers: BigInt
+  numFunders: BigInt
+  proof: Proof
+}
 
 input DPoolListInput {
-id: ID
-DPoolIDs: [String]
-numPools: Int
-numUsers: Int
-numActiveUsers: Int
-numFunders: Int
+  id: ID
+
+  DPoolIDs: [String]
+  numPools: BigInt
+  numUsers: BigInt
+  numActiveUsers: BigInt
+  numFunders: BigInt
 }
 
 type DPool {
-id: ID
-address: String
-moneyMarket: String
-stablecoin: String
-interestModel: String
-users: [User]  @goField(forceResolver: true)
-UserIDs: [String]
-numUsers: Int
-deposits: [Deposit]  @goField(forceResolver: true)
-DepositIDs: [String]
-numDeposits: Int
-numActiveDeposits: String
-totalActiveDeposit: String
-totalHistoricalDeposit: String
-totalInterestPaid: String
-unfundedDepositAmount: String
-funders: [Funder]  @goField(forceResolver: true)
-FunderIDs: [String]
-numFunders: String
-fundings: [Funding]  @goField(forceResolver: true)
-FundingIDs: [String]
-numFundings: String
-MinDepositPeriod: Float
-MaxDepositPeriod: Float
-MinDepositAmount: Float
-MaxDepositAmount: Float
-mphMintingMultiplier: Float
-mphDepositorRewardMultiplier: Float
-mphFunderRewardMultiplier: Float
-oneYearInterestRate: Float
-surplus: String
-moneyMarketIncomeIndex: String
-oracleInterestRate: String
-proof: Proof 
-} 
+  id: ID
+  address: String
+  moneyMarket: String
+  stablecoin: String
+  interestModel: String
+  users: [User] @goField(forceResolver: true)
+  UserIDs: [String]
+
+  numUsers: BigInt
+  deposits: [Deposit] @goField(forceResolver: true)
+  DepositIDs: [String]
+
+  numDeposits: BigInt
+  numActiveDeposits: BigInt
+  totalActiveDeposit: BigDecimal
+  totalHistoricalDeposit: BigDecimal
+  totalInterestPaid: BigDecimal
+  unfundedDepositAmount: BigDecimal
+  funders: [Funder] @goField(forceResolver: true)
+  FunderIDs: [String]
+
+  numFunders: BigInt
+  fundings: [Funding] @goField(forceResolver: true)
+  FundingIDs: [String]
+
+  numFundings: BigInt
+  MinDepositPeriod: BigInt
+  MaxDepositPeriod: BigInt
+  MinDepositAmount: BigDecimal
+  MaxDepositAmount: BigDecimal
+  mphDepositorRewardMintMultiplier: BigDecimal
+  mphDepositorRewardTakeBackMultiplier: BigDecimal
+  mphFunderRewardMultiplier: BigDecimal
+  oneYearInterestRate: BigDecimal
+  surplus: BigDecimal
+  moneyMarketIncomeIndex: BigInt
+  oracleInterestRate: BigDecimal
+  proof: Proof
+}
 
 input DPoolInput {
-id: ID
-address: String
-moneyMarket: String
-stablecoin: String
-interestModel: String
-UserIDs: [String]
-numUsers: Int
-DepositIDs: [String]
-numDeposits: Int
-numActiveDeposits: String
-totalActiveDeposit: String
-totalHistoricalDeposit: String
-totalInterestPaid: String
-unfundedDepositAmount: String
-FunderIDs: [String]
-numFunders: String
-FundingIDs: [String]
-numFundings: String
-MinDepositPeriod: Float
-MaxDepositPeriod: Float
-MinDepositAmount: Float
-MaxDepositAmount: Float
-mphMintingMultiplier: Float
-mphDepositorRewardMultiplier: Float
-mphFunderRewardMultiplier: Float
-oneYearInterestRate: Float
-surplus: String
-moneyMarketIncomeIndex: String
-oracleInterestRate: String
+  id: ID
+  address: String
+  moneyMarket: String
+  stablecoin: String
+  interestModel: String
+
+  UserIDs: [String]
+  numUsers: BigInt
+
+  DepositIDs: [String]
+  numDeposits: BigInt
+  numActiveDeposits: BigInt
+  totalActiveDeposit: BigDecimal
+  totalHistoricalDeposit: BigDecimal
+  totalInterestPaid: BigDecimal
+  unfundedDepositAmount: BigDecimal
+
+  FunderIDs: [String]
+  numFunders: BigInt
+
+  FundingIDs: [String]
+  numFundings: BigInt
+  MinDepositPeriod: BigInt
+  MaxDepositPeriod: BigInt
+  MinDepositAmount: BigDecimal
+  MaxDepositAmount: BigDecimal
+  mphDepositorRewardMintMultiplier: BigDecimal
+  mphDepositorRewardTakeBackMultiplier: BigDecimal
+  mphFunderRewardMultiplier: BigDecimal
+  oneYearInterestRate: BigDecimal
+  surplus: BigDecimal
+  moneyMarketIncomeIndex: BigInt
+  oracleInterestRate: BigDecimal
 }
 
 type User {
-id: ID
-address: String
-pools: [DPool]  @goField(forceResolver: true)
-DPoolIDs: [String]
-numPools: String
-deposits: [Deposit]  @goField(forceResolver: true)
-DepositIDs: [String]
-numDeposits: String
-numActiveDeposits: String
-totalDepositByPool: [UserTotalDeposit]  @goField(forceResolver: true)
-UserTotalDepositIDs: [String]
-totalMPHEarned: String
-totalMPHPaidBack: String
-proof: Proof 
-} 
+  id: ID
+  address: String
+  pools: [DPool] @goField(forceResolver: true)
+  DPoolIDs: [String]
+
+  numPools: BigInt
+  deposits: [Deposit] @goField(forceResolver: true)
+  DepositIDs: [String]
+
+  numDeposits: BigInt
+  numActiveDeposits: BigInt
+  totalDepositByPool: [UserTotalDeposit] @goField(forceResolver: true)
+  UserTotalDepositIDs: [String]
+
+  totalMPHEarned: BigDecimal
+  totalMPHPaidBack: BigDecimal
+  proof: Proof
+}
 
 input UserInput {
-id: ID
-address: String
-DPoolIDs: [String]
-numPools: String
-DepositIDs: [String]
-numDeposits: String
-numActiveDeposits: String
-UserTotalDepositIDs: [String]
-totalMPHEarned: String
-totalMPHPaidBack: String
+  id: ID
+  address: String
+
+  DPoolIDs: [String]
+  numPools: BigInt
+
+  DepositIDs: [String]
+  numDeposits: BigInt
+  numActiveDeposits: BigInt
+
+  UserTotalDepositIDs: [String]
+  totalMPHEarned: BigDecimal
+  totalMPHPaidBack: BigDecimal
 }
 
 type UserTotalDeposit {
-id: ID
-user: User  @goField(forceResolver: true)
-UserID: String
-pool: DPool  @goField(forceResolver: true)
-DPoolID: String
-totalActiveDeposit: String
-totalHistoricalDeposit: String
-totalInterestEarned: String
-totalHistoricalInterestEarned: String
-proof: Proof 
-} 
+  id: ID
+  user: User @goField(forceResolver: true)
+  UserID: String
+
+  pool: DPool @goField(forceResolver: true)
+  DPoolID: String
+
+  totalActiveDeposit: BigDecimal
+  totalHistoricalDeposit: BigDecimal
+  totalInterestEarned: BigDecimal
+  totalHistoricalInterestEarned: BigDecimal
+  proof: Proof
+}
 
 input UserTotalDepositInput {
-id: ID
-UserID: String
-DPoolID: String
-totalActiveDeposit: String
-totalHistoricalDeposit: String
-totalInterestEarned: String
-totalHistoricalInterestEarned: String
+  id: ID
+
+  UserID: String
+
+  DPoolID: String
+  totalActiveDeposit: BigDecimal
+  totalHistoricalDeposit: BigDecimal
+  totalInterestEarned: BigDecimal
+  totalHistoricalInterestEarned: BigDecimal
 }
 
 type Deposit {
-id: ID
-nftID: String
-user: User  @goField(forceResolver: true)
-UserID: String
-pool: DPool  @goField(forceResolver: true)
-DPoolID: String
-amount: String
-maturationTimestamp: String
-active: Boolean
-depositTimestamp: String
-interestEarned: String
-fundingID: String
-mintMPHAmount: String
-takeBackMPHAmount: String
-initialMoneyMarketIncomeIndex: String
-proof: Proof 
-} 
+  id: ID
+  nftID: BigInt
+  user: User @goField(forceResolver: true)
+  UserID: String
+
+  pool: DPool @goField(forceResolver: true)
+  DPoolID: String
+
+  amount: BigDecimal
+  maturationTimestamp: BigInt
+  active: Boolean
+  depositTimestamp: BigInt
+  depositLength: BigInt
+  interestEarned: BigDecimal
+  fundingID: BigInt
+  mintMPHAmount: BigDecimal
+  takeBackMPHAmount: BigDecimal
+  initialMoneyMarketIncomeIndex: BigInt
+  fundingInterestPaid: BigDecimal
+  fundingRefundAmount: BigDecimal
+  proof: Proof
+}
 
 input DepositInput {
-id: ID
-nftID: String
-UserID: String
-DPoolID: String
-amount: String
-maturationTimestamp: String
-active: Boolean
-depositTimestamp: String
-interestEarned: String
-fundingID: String
-mintMPHAmount: String
-takeBackMPHAmount: String
-initialMoneyMarketIncomeIndex: String
+  id: ID
+  nftID: BigInt
+
+  UserID: String
+
+  DPoolID: String
+  amount: BigDecimal
+  maturationTimestamp: BigInt
+  active: Boolean
+  depositTimestamp: BigInt
+  depositLength: BigInt
+  interestEarned: BigDecimal
+  fundingID: BigInt
+  mintMPHAmount: BigDecimal
+  takeBackMPHAmount: BigDecimal
+  initialMoneyMarketIncomeIndex: BigInt
+  fundingInterestPaid: BigDecimal
+  fundingRefundAmount: BigDecimal
 }
 
 type Funder {
-id: ID
-address: String
-pools: [DPool]  @goField(forceResolver: true)
-DPoolIDs: [String]
-numPools: String
-fundings: [Funding]  @goField(forceResolver: true)
-FundingIDs: [String]
-numFundings: String
-totalMPHEarned: String
-totalInterestByPool: [FunderTotalInterest]  @goField(forceResolver: true)
-FunderTotalInterestIDs: [String]
-proof: Proof 
-} 
+  id: ID
+  address: String
+  pools: [DPool] @goField(forceResolver: true)
+  DPoolIDs: [String]
+
+  numPools: BigInt
+  fundings: [Funding] @goField(forceResolver: true)
+  FundingIDs: [String]
+
+  numFundings: BigInt
+  totalMPHEarned: BigDecimal
+  totalInterestByPool: [FunderTotalInterest] @goField(forceResolver: true)
+  FunderTotalInterestIDs: [String]
+
+  proof: Proof
+}
 
 input FunderInput {
-id: ID
-address: String
-DPoolIDs: [String]
-numPools: String
-FundingIDs: [String]
-numFundings: String
-totalMPHEarned: String
-FunderTotalInterestIDs: [String]
+  id: ID
+  address: String
+
+  DPoolIDs: [String]
+  numPools: BigInt
+
+  FundingIDs: [String]
+  numFundings: BigInt
+  totalMPHEarned: BigDecimal
+
+  FunderTotalInterestIDs: [String]
 }
 
 type FunderTotalInterest {
-id: ID
-funder: Funder  @goField(forceResolver: true)
-FunderID: String
-pool: DPool  @goField(forceResolver: true)
-DPoolID: String
-totalDeficitFunded: String
-totalHistoricalDeficitFunded: String
-totalInterestEarned: String
-totalHistoricalInterestEarned: String
-totalRecordedFundedDepositAmount: String
-proof: Proof 
-} 
+  id: ID
+  funder: Funder @goField(forceResolver: true)
+  FunderID: String
+
+  pool: DPool @goField(forceResolver: true)
+  DPoolID: String
+
+  totalDeficitFunded: BigDecimal
+  totalHistoricalDeficitFunded: BigDecimal
+  totalInterestEarned: BigDecimal
+  totalHistoricalInterestEarned: BigDecimal
+  totalRecordedFundedDepositAmount: BigDecimal
+  proof: Proof
+}
 
 input FunderTotalInterestInput {
-id: ID
-FunderID: String
-DPoolID: String
-totalDeficitFunded: String
-totalHistoricalDeficitFunded: String
-totalInterestEarned: String
-totalHistoricalInterestEarned: String
-totalRecordedFundedDepositAmount: String
+  id: ID
+
+  FunderID: String
+
+  DPoolID: String
+  totalDeficitFunded: BigDecimal
+  totalHistoricalDeficitFunded: BigDecimal
+  totalInterestEarned: BigDecimal
+  totalHistoricalInterestEarned: BigDecimal
+  totalRecordedFundedDepositAmount: BigDecimal
 }
 
 type Funding {
-id: ID
-nftID: String
-funder: Funder  @goField(forceResolver: true)
-FunderID: String
-pool: DPool  @goField(forceResolver: true)
-DPoolID: String
-fromDepositID: String
-toDepositID: String
-active: Boolean
-recordedFundedDepositAmount: String
-recordedMoneyMarketIncomeIndex: String
-initialFundedDepositAmount: String
-fundedDeficitAmount: String
-totalInterestEarned: String
-mintMPHAmount: String
-proof: Proof 
-} 
+  id: ID
+  nftID: BigInt
+  funder: Funder @goField(forceResolver: true)
+  FunderID: String
+
+  pool: DPool @goField(forceResolver: true)
+  DPoolID: String
+
+  fromDepositID: BigInt
+  toDepositID: BigInt
+  active: Boolean
+  recordedFundedDepositAmount: BigDecimal
+  recordedMoneyMarketIncomeIndex: BigInt
+  initialFundedDepositAmount: BigDecimal
+  fundedDeficitAmount: BigDecimal
+  totalInterestEarned: BigDecimal
+  creationTimestamp: BigInt
+  mphRewardEarned: BigDecimal
+  refundAmount: BigDecimal
+  proof: Proof
+}
 
 input FundingInput {
-id: ID
-nftID: String
-FunderID: String
-DPoolID: String
-fromDepositID: String
-toDepositID: String
-active: Boolean
-recordedFundedDepositAmount: String
-recordedMoneyMarketIncomeIndex: String
-initialFundedDepositAmount: String
-fundedDeficitAmount: String
-totalInterestEarned: String
-mintMPHAmount: String
+  id: ID
+  nftID: BigInt
+
+  FunderID: String
+
+  DPoolID: String
+  fromDepositID: BigInt
+  toDepositID: BigInt
+  active: Boolean
+  recordedFundedDepositAmount: BigDecimal
+  recordedMoneyMarketIncomeIndex: BigInt
+  initialFundedDepositAmount: BigDecimal
+  fundedDeficitAmount: BigDecimal
+  totalInterestEarned: BigDecimal
+  creationTimestamp: BigInt
+  mphRewardEarned: BigDecimal
+  refundAmount: BigDecimal
 }
 
 type MPHHolder {
-id: ID
-address: String
-mphBalance: String
-stakedMPHBalance: String
-totalHistoricalReward: String
-proof: Proof 
-} 
+  id: ID
+  address: String
+  totalHistoricalReward: BigDecimal
+  proof: Proof
+}
 
 input MPHHolderInput {
-id: ID
-address: String
-mphBalance: String
-stakedMPHBalance: String
-totalHistoricalReward: String
+  id: ID
+  address: String
+  totalHistoricalReward: BigDecimal
 }
 
 type MPH {
-id: ID
-totalSupply: String
-totalStakedMPHBalance: String
-totalHistoricalReward: String
-rewardPerSecond: String
-rewardPerMPHPerSecond: String
-proof: Proof 
-} 
+  id: ID
+  totalHistoricalReward: BigDecimal
+  rewardPerSecond: BigDecimal
+  rewardPerMPHPerSecond: BigDecimal
+  proof: Proof
+}
 
 input MPHInput {
-id: ID
-totalSupply: String
-totalStakedMPHBalance: String
-totalHistoricalReward: String
-rewardPerSecond: String
-rewardPerMPHPerSecond: String
+  id: ID
+  totalHistoricalReward: BigDecimal
+  rewardPerSecond: BigDecimal
+  rewardPerMPHPerSecond: BigDecimal
+}
+
+type Vest {
+  id: ID
+  index: BigInt
+  user: String
+  amount: BigDecimal
+  vestPeriodInSeconds: BigInt
+  creationTimestamp: BigInt
+  withdrawnAmount: BigDecimal
+  proof: Proof
+}
+
+input VestInput {
+  id: ID
+  index: BigInt
+  user: String
+  amount: BigDecimal
+  vestPeriodInSeconds: BigInt
+  creationTimestamp: BigInt
+  withdrawnAmount: BigDecimal
+}
+
+type FractionalDeposit {
+  id: ID
+  address: String
+  zeroCouponBondAddress: String
+  ownerAddress: String
+  active: Boolean
+  deposit: Deposit @goField(forceResolver: true)
+  DepositID: String
+
+  proof: Proof
+}
+
+input FractionalDepositInput {
+  id: ID
+  address: String
+  zeroCouponBondAddress: String
+  ownerAddress: String
+  active: Boolean
+
+  DepositID: String
 }
 
 type Proof {

@@ -184,7 +184,7 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
   let entityStructs = schemaGen.getEntityObjects({}, schemaFile);
 
   let processedText = fileText;
-  console.log(fileText);
+  //console.log(fileText);
   let templateList = entityTemplate.toString().split("####");
   let entityTemplateImports = templateList[0];
   let entityInputTemplate = templateList[1];
@@ -192,27 +192,43 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
   let toEntityFnTemplate = templateList[3];
   let entityFnTemplate = templateList[4];
   let entityGeneralTemplate = templateList[5];
+  console.log(entityStructs);
 
   for (const [name, entity] of Object.entries(entityStructs)) {
-    let eOldStr = 'typename?: "$EntityName";\n'
-      .split("$EntityName")
-      .join(entity.entityName);
+    //name of the entity
+    console.log("Entity Name: ", name);
+    if (
+      !entity ||
+      name == "BigDecimal" ||
+      name == "BigInt" ||
+      entity == {} ||
+      name == "hasAuthentication" ||
+      name == "goField"
+    ) {
+      //chec
+      console.log("Entity Name: ", name);
+      console.log("Entity is null");
+      continue;
+    }
+    let eOldStr = "typename?: '$EntityName';".split("$EntityName").join(name);
     let entityNewStr = entityFnTemplate + "};\n";
+
     let processedTextList = processedText.split(eOldStr);
+    console.log(toEntityFnTemplate);
     let entityFnStr = toEntityFnText(name, entity, toEntityFnTemplate);
     let inputFnStr = toEntityInputFnText(name, entity, toInputFnTemplate);
+    console.log(entityFnStr);
+    console.log(inputFnStr);
     entityNewStr += "\n\n" + entityFnStr + "\n" + inputFnStr + "\n";
     processedTextList[1] = processedTextList[1].replace("};\n", entityNewStr);
 
     processedText = processedTextList
       .join(eOldStr)
       .split("$EntityName")
-      .join(entity.entityName);
+      .join(name);
 
-    let inputOldStr = entity.entityName + "Input = {\n";
-    let inputNewStr = entityInputTemplate
-      .split("$EntityName")
-      .join(entity.entityName);
+    let inputOldStr = name + "Input = {";
+    let inputNewStr = entityInputTemplate.split("$EntityName").join(name);
     processedText = processedText.replace(inputOldStr, inputNewStr);
   }
 
@@ -226,13 +242,15 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
 //toLoadArgs()
 
 function toEntityInputFnText(name, entity, template = "") {
-  let fnText = ""; //from template
+  let fnText = template; //from template
   let fnTemplateNames = "";
+  console.log("Entity");
+  console.log(entity);
   for (const [name, variable] of Object.entries(entity)) {
     let propertyName = variable.name;
     let typeProp = variable.type;
     let isList = variable.isList;
-    let objName = "$propertyName = parse$Type(obj.$propertyName) \n";
+    let objName = " $propertyName: parse$Type(obj.$propertyName), \n";
     objName = objName
       .split("$propertyName")
       .join(propertyName)
@@ -245,13 +263,13 @@ function toEntityInputFnText(name, entity, template = "") {
 }
 
 function toEntityFnText(name, entity, template = "") {
-  let fnText = ""; //different template
+  let fnText = template; //different template
   let fnTemplateNames = "";
   for (const [name, variable] of Object.entries(entity)) {
     let propertyName = variable.name;
     let typeProp = variable.type;
     let isList = variable.isList;
-    let objName = "obj.$propertyName = parse$Type(objInput.$propertyName) \n";
+    let objName = " obj.$propertyName = parse$Type(objInput.$propertyName) \n";
     objName = objName
       .split("$propertyName")
       .join(propertyName)
