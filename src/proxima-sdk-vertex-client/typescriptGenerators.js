@@ -235,11 +235,15 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
       .join(name);
 
     let inputOldStr = name + "Input = {";
-    let inputNewStr = entityInputTemplate.split("$EntityName").join(name);
+    let inputNewStr = entityInputTemplate
+      .split("$EntityName")
+      .join(name)
+      .replace("\n", "");
     processedText = processedText.replace(inputOldStr, inputNewStr);
   }
 
   processedText += entityGeneralTemplate;
+  processedText = processedText.split("type \n").join("type ");
   //console.log(entityTemplateImports);
   return entityTemplateImports.toString() + processedText;
 }
@@ -251,19 +255,28 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
 function toEntityInputFnText(name, entity, template = "", entityDict = {}) {
   let fnText = template; //from template
   let fnTemplateNames = "";
-  console.log("Entity");
-  console.log(entity);
+  // console.log("Entity");
+  // console.log(entity);
   for (const [name, variable] of Object.entries(entity)) {
     let propertyName = variable.name;
     let typeProp = variable.type;
     let isList = variable.isList;
 
-    if (propertyName == "id" || typeProp in entityDict) {
+    if (
+      propertyName == "proof" ||
+      propertyName == "id" ||
+      typeProp in entityDict
+    ) {
       continue;
     }
-    let objName = " $propertyName: parse$Type(obj.$propertyName), \n";
-    if (isList) {
-      objName = " obj.$propertyName = objInput.$propertyName \n";
+    var objName = " $propertyName: parse$Type(obj.$propertyName), \n";
+
+    if (
+      typeProp == "Boolean" ||
+      isList ||
+      propertyName.substring(propertyName.length - 2).includes("s")
+    ) {
+      objName = " $propertyName: objInput.$propertyName, \n";
     }
     objName = objName
       .split("$propertyName")
@@ -284,18 +297,24 @@ function toEntityFnText(name, entity, template = "", entityDict = {}) {
     let typeProp = variable.type;
     let isList = variable.isList;
 
-    if (propertyName == "id" || typeProp in entityDict) {
+    if (
+      propertyName == "proof" ||
+      propertyName == "id" ||
+      typeProp in entityDict
+    ) {
       continue;
     }
     let objName = " obj.$propertyName = parse$Type(objInput.$propertyName) \n";
-    if (isList) {
+    objName = objName.replace("$Type", typeProp);
+    if (
+      typeProp == "Boolean" ||
+      isList ||
+      propertyName.substring(propertyName.length - 2).includes("s")
+    ) {
       objName = " obj.$propertyName = objInput.$propertyName \n";
     }
 
-    objName = objName
-      .split("$propertyName")
-      .join(propertyName)
-      .replace("$Type", typeProp);
+    objName = objName.split("$propertyName").join(propertyName);
     fnTemplateNames += objName;
   }
   let fnTemplatePlacementString = "$FNBODY"; //placement string
