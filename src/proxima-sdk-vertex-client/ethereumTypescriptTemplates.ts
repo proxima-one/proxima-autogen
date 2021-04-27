@@ -2,8 +2,6 @@
 //export type $eventname = $function.$eventname;
 import { Contract, ethers, Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
-
-import { DInterest } from "../DInterest";
 ####
 static bind(address: string, provider?: Signer | Provider): $entityName {
   if (!provider) {

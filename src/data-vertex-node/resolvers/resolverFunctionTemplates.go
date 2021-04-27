@@ -1,3 +1,4 @@
+//func (r *dPoolResolver) $EntityNames(ctx context.Context, obj *models.DPool) ([]*models.User, error) {
 	entities, _ := dataloader.For(ctx).$loaderName.LoadAll(obj.$input)
 	var args map[string]interface{} = graphql.GetFieldContext(ctx).Args
 	//check argument context
@@ -34,7 +35,7 @@
 		if where != nil {
 			args["where"] = *where
 		}
-		table, _ := r.db.GetTable("DPoolLists")
+		table, _ := r.db.GetTable("$EntityNames")
 		result, err := table.Search(args["where"].(string), args["order_by"].(string), args["direction"].(bool), args["first"].(int), args["last"].(int), args["prove"].(bool), args)
 		if err != nil {
 		return nil, err

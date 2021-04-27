@@ -299,7 +299,7 @@ function build_dataloaders(fileIn, fileOut) {
   for (const functionText of resolverFns) {
     if (functionText && functionText.includes("ctx context.Context,")) {
       let newFunctionText = createResolverFunction(functionText) + "\n";
-      //console.log(newFunctionText);
+      console.log(newFunctionText);
       newResolverText += newFunctionText;
     }
   }

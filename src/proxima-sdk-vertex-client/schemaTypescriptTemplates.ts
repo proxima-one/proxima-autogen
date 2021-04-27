@@ -1,14 +1,26 @@
 import {useFetch} from "../../lib/DataVertexClient";
 //import { TypedDocumentNode } from "@graphql-typed-document-node/core";
+// import { TypedDocumentNode } from "@graphql-typed-document-node/core";
+// import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
+import {
+  convert,
+  parseBigDecimal,
+  parseProof,
+  parseBigInt,
+  parseInt,
+  parseNumber,
+  parseBigNumber,
+  parseString,
+} from "./utils";
 ####
 $EntityNameInput = {
   __typename?: '$EntityNameInput';
 ####
 export function to$EntityNameInput(obj: $EntityName): $EntityNameInput {
-  let objInput: $EntityNameInput = {
+  let objInput: $EntityNameInput =   {
     __typename: "$EntityNameInput",
     id: obj.id,
-    $FNBODY,
+    $FNBODY
   };
   return objInput;
 }

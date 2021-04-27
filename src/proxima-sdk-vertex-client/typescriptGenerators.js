@@ -70,6 +70,7 @@ function updateEthereumTypescriptTypes(schemaFile, typescriptOutputPath) {
       let name = temp[temp.length - 1].replace(".ts", "").split("_")[0];
 
       indexText = processIndexFactoryExportText(name, indexText);
+      newFileText = newFileText.split("import type {").join("import {");
       fs.outputFileSync(file, newFileText);
     }
   }
@@ -196,7 +197,6 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
 
   for (const [name, entity] of Object.entries(entityStructs)) {
     //name of the entity
-    console.log("Entity Name: ", name);
     if (
       !entity ||
       name == "BigDecimal" ||
@@ -214,12 +214,19 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
     let entityNewStr = entityFnTemplate + "};\n";
 
     let processedTextList = processedText.split(eOldStr);
-    console.log(toEntityFnTemplate);
-    let entityFnStr = toEntityFnText(name, entity, toEntityFnTemplate);
-    let inputFnStr = toEntityInputFnText(name, entity, toInputFnTemplate);
-    console.log(entityFnStr);
-    console.log(inputFnStr);
-    entityNewStr += "\n\n" + entityFnStr + "\n" + inputFnStr + "\n";
+    let entityFnStr = toEntityFnText(
+      name,
+      entity,
+      toEntityFnTemplate,
+      entityStructs
+    );
+    let inputFnStr = toEntityInputFnText(
+      name,
+      entity,
+      toInputFnTemplate,
+      entityStructs
+    );
+    entityNewStr += "\n\n" + entityFnStr + inputFnStr + "\n";
     processedTextList[1] = processedTextList[1].replace("};\n", entityNewStr);
 
     processedText = processedTextList
@@ -241,7 +248,7 @@ function processSchemaTypescriptTemplate(schemaFile, entityTemplate, fileText) {
 
 //toLoadArgs()
 
-function toEntityInputFnText(name, entity, template = "") {
+function toEntityInputFnText(name, entity, template = "", entityDict = {}) {
   let fnText = template; //from template
   let fnTemplateNames = "";
   console.log("Entity");
@@ -250,7 +257,14 @@ function toEntityInputFnText(name, entity, template = "") {
     let propertyName = variable.name;
     let typeProp = variable.type;
     let isList = variable.isList;
+
+    if (propertyName == "id" || typeProp in entityDict) {
+      continue;
+    }
     let objName = " $propertyName: parse$Type(obj.$propertyName), \n";
+    if (isList) {
+      objName = " obj.$propertyName = objInput.$propertyName \n";
+    }
     objName = objName
       .split("$propertyName")
       .join(propertyName)
@@ -262,14 +276,22 @@ function toEntityInputFnText(name, entity, template = "") {
   return fnText;
 }
 
-function toEntityFnText(name, entity, template = "") {
+function toEntityFnText(name, entity, template = "", entityDict = {}) {
   let fnText = template; //different template
   let fnTemplateNames = "";
   for (const [name, variable] of Object.entries(entity)) {
     let propertyName = variable.name;
     let typeProp = variable.type;
     let isList = variable.isList;
+
+    if (propertyName == "id" || typeProp in entityDict) {
+      continue;
+    }
     let objName = " obj.$propertyName = parse$Type(objInput.$propertyName) \n";
+    if (isList) {
+      objName = " obj.$propertyName = objInput.$propertyName \n";
+    }
+
     objName = objName
       .split("$propertyName")
       .join(propertyName)
